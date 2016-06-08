@@ -16,21 +16,12 @@ Schemas= {
 class SqlTable(object):
     
     def __init__(self, table_name, schema ):
-        pass
+        self.table_name = table_name
+        self.schema = schema
 
     
-    def __call__( self, cursor):
+    def create( self, cursor):
         pass
-
-        
-
-
-def createTables( dbname, funs ):
-    with sql.connect( dbname ) as conn:
-        cursor = conn.cursor()
-        for fun in funs:
-            fun(cursor)
-
 
 
 def main():
@@ -44,9 +35,9 @@ def main():
 
     dbname = args[0]
     
-    tables = [ SqlTable( table_name, schema ) for table_name, schema in Schemas.items() ]
-    
-    createTables( dbname, tables )
+    with sql.connect( dbname ) as conn:
+        for table_name, schema in Schemas.items():
+            SqlTable( table_name, schema ).create(conn)
 
     
 
