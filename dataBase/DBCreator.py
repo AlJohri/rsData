@@ -7,10 +7,39 @@ from optparse import OptionParser
 
 # table name to schema mapping
 Schemas= {   
-'houses':
-'''
-''',
+'housemls':
+	    '''
+	    houseID int primary key,
+            mls text''',
 
+'houses':
+	    '''
+	    address text primary key,
+            town text, 
+            state text,
+      	    houseID int,
+            style text,
+            category text,
+            lot text,
+            floor text,
+            rooms text,
+            bedrooms text,
+            bathrooms text,
+            attic text,
+            basement text,
+            garage text,
+            heatcool text,
+            yearbuilt text,
+            rent int,
+            FOREIGN KEY (houseID) REFERENCES housemls(houseID)''',
+
+'mlshistory':
+	    '''
+            mls text primary key,
+	    Date date,
+	    Price int,
+	    status text
+	    '''
 }
 
 class SqlTable(object):
@@ -21,7 +50,7 @@ class SqlTable(object):
 
     
     def create( self, cursor):
-        pass
+        cursor.execute('create table %s (%s)' % ( self.table_name, self.schema ))
 
 
 def main():
@@ -38,7 +67,11 @@ def main():
     with sql.connect( dbname ) as conn:
         for table_name, schema in Schemas.items():
             SqlTable( table_name, schema ).create(conn)
-
+    conn.execute('''INSERT INTO housemls (houseID, mls) VALUES(559, '482048');''')
+    cursor = conn.execute("SELECT houseID, mls from housemls")
+    for row in cursor:
+    	print "houseID = ", row[0]
+    	print "mls = ", row[1], "\n"
     
 
 main()
