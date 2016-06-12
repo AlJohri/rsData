@@ -9,33 +9,43 @@ from optparse import OptionParser
 Schemas= {   
 'housemls':
 	    '''
-	    houseID int primary key,
-            mls text''',
+	    houseID int,
+            mls text,
+            FOREIGN KEY (houseID) REFERENCES houses(houseID)
+            ''',
 
 'houses':
 	    '''
-	    address text primary key,
+            houseID int primary key,
+	    address text,
             town text, 
             state text,
-      	    houseID int,
-            style text,
             category text,
-            lot text,
-            floor text,
-            rooms text,
-            bedrooms text,
-            bathrooms text,
+            lot real,
+            floor real,
+            rooms real,
+            bedrooms real,
+            bathrooms real,
             attic text,
             basement text,
             garage text,
             heatcool text,
-            yearbuilt text,
+            utility text,
+            yearbuilt int,
+            tax  int,
+            schoolH int,
+            schoolM int,
+            schoolE int,
+            floodzone int,
             rent int,
-            FOREIGN KEY (houseID) REFERENCES housemls(houseID)''',
+            images blob,
+            CONSTRAINT uniqAddress  UNIQUE ( address, town, state )
+            ''',
+    
 
 'mlshistory':
 	    '''
-            mls text primary key,
+            mls text,
 	    Date date,
 	    Price int,
 	    status text
@@ -67,12 +77,8 @@ def main():
     with sql.connect( dbname ) as conn:
         for table_name, schema in Schemas.items():
             SqlTable( table_name, schema ).create(conn)
-    conn.execute('''INSERT INTO housemls (houseID, mls) VALUES(559, '482048');''')
-    cursor = conn.execute("SELECT houseID, mls from housemls")
-    for row in cursor:
-    	print "houseID = ", row[0]
-    	print "mls = ", row[1], "\n"
     
 
-main()
+if __name__ == "__main__":
+    main()
 
