@@ -69,34 +69,12 @@ class SqlTable(object):
 def main():
 	parser = OptionParser()
 
-	parser.add_option("-a",
-                  help="create all tables", 
-          dest="all")
-
-	parser.add_option("-l",
-                  help="list all tables in schema", 
-          dest="list")
-          
-	parser.add_option("-f",
-	
-                  help="delete and create table", 
-          dest="dele")
-
-	(options, args) = parser.parse_args()
-	dbname = args[0]
-	if options.all:
-		with sql.connect( dbname ) as conn:
-			for table_name, schema in Schemas.items():
-				SqlTable( table_name, schema ).create(conn)
-
-	if options.list:
-		for table_name, schema in Schemas.items():
-			print table_name
-
-	if options.dele:
-		with sql.connect( dbname ) as conn:
-			for table_name, schema in Schemas.items():
-				SqlTable( table_name, schema ).create(conn)
+    dbname = args[0]
+    
+    with sql.connect( dbname ) as conn:
+        for table_name, schema in Schemas.items():
+            SqlTable( table_name, schema ).create(conn)
+    
 
 if __name__ == "__main__":
     main()
