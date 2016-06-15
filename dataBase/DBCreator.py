@@ -65,13 +65,15 @@ class SqlTable(object):
     def delete( self, cursor):
         cursor.execute('drop table if exists %s' % ( self.table_name ))
 
+def foo_callback(option, opt, value, parser):
+	setattr(parser.values, option.dest, value.split(','))
 
 def main():
 	usage = 'usage: %prog [options] dbname'
 	parser = OptionParser(usage=usage)
 	parser.add_option("-l", "--lial", action="store_true", dest="list", default = False, help= "list all tables")
 	parser.add_option("-f", "--force", action="store_true", dest="force", default = False, help= "force remove and create tables")
-	parser.add_option("-t", "--table", type="string", help="name of the table", dest="table")
+	parser.add_option("-t", "--table", type="string", action='callback', callback=foo_callback, help="list of the table", dest="table")
 	(options, args) = parser.parse_args()
 	if options.list:    
 		print "Tables in schemas are: " + str(Schemas.keys())
@@ -85,14 +87,16 @@ def main():
 	
 	with sql.connect( dbname ) as conn:
 		for table_name, schema in Schemas.items():
+			table_schema = SqlTable( table_name, schema )
 			if options.table:
-				if options.table == table_name:
-					SqlTable( table_name, schema ).create(conn)
+				for itera in options.table:
+					if itera == table_name:
+						table_schema.create(conn)
 			elif options.force:
-				SqlTable( table_name, schema ).delete(conn)
-				SqlTable( table_name, schema ).create(conn)
+				table_schema.delete(conn)
+				table_schema.create(conn)
 			else:
-				SqlTable( table_name, schema ).create(conn)
+				table_schema.create(conn)
     
 
 if __name__ == "__main__":
