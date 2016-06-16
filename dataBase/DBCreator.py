@@ -86,22 +86,17 @@ def main():
 	
 	
 	with sql.connect( dbname ) as conn:
-		if options.table:
-			table_list = Schemas.keys()
-			for itera in options.table:
-				if itera not in table_list:
-					print >> sys.stderr,"Table: %s does not exist!" %(itera)
-					
-		for table_name, schema in Schemas.items():
-			table_schema = SqlTable( table_name, schema )
-			if not options.table:
-				options.table = Schemas.keys()
-			
-			if table_name in options.table:
+		if not options.table:
+			options.table = Schemas.keys()
+		for itera in options.table:
+			if not Schemas.get(itera, False):
+				print >> sys.stderr,"Table: %s does not exist!" %(itera)
+			else:
+				table_schema = SqlTable(itera, Schemas.get(itera, False))
 				if options.force:
 					table_schema.delete(conn)
 				table_schema.create(conn)
-				
+
     
 
 if __name__ == "__main__":
