@@ -6,92 +6,9 @@ import logging.handlers
 
 class DBAccessor(object):
 
-    def __init__(self, logHandler, logLevel=logging.INFO):
-        self.DBNAME='houseData.db'
-        self.houseKeys=[
-            "mls",
-            "address",
-            "town", 
-            "state",
-            "status",
-            "listdate",
-            "solddate",
-            "commutetime",
-            "style",
-            "category",
-            "lot",
-            "floor",
-            "rooms",
-            "bedrooms",
-            "bathrooms",
-            "basement",
-            "garage",
-            "heatcool",
-            'yearbuilt'
-            ]
+    def __init__(self, dbname) :
+        self.dbname = dbname
 
-        self.priceKeys=[
-            "mls",
-            "price",
-            "tax",  
-            "rent1",
-            "rent2",
-            "rent3",
-            ]
-
-
-        self.logger = logging.getLogger('HouseDB')
-        self.logger.setLevel(logLevel)
-        self.logger.addHandler(logHandler)
-
-    def reCreateHouseTable(self):
-        
-        with sql.connect(self.DBNAME) as conn:
-            cursor= conn.cursor()
-        
-            cursor.execute('drop table if exists houses;')
-            cursor.execute( 
-            '''
-            create table houses (  
-                mls text primary key,
-                address text,
-                town text, 
-                state text,
-                status text,  /* A: active, S: sold*/
-                listdate date,
-                solddate date,
-                commutetime real,
-                style text,
-                category text,
-                lot real,
-                floor real,
-                rooms real,
-                bedrooms real,
-                bathrooms real, 
-                basement text,
-                garage text,
-                heatcool text,
-                yearbuilt integer
-            );
-            ''')
-
-    def reCreatePriceTable(self):
-        with sql.connect(self.DBNAME) as conn:
-            cursor= conn.cursor()
-
-            cursor.execute('drop table if exists price;' )
-            cursor.execute( 
-            '''
-            create table price (  
-                mls text,
-                price real,
-                tax real,  
-                rent1  real,
-                rent2  real,
-                rent3  real,
-                foreign key (mls) references houses(mls)  on update cascade on delete cascade
-            );
-            ''')
     
     def isMLSExisted(self, mls):
         with sql.connect(self.DBNAME) as conn:
@@ -145,7 +62,9 @@ class DBAccessor(object):
             else:
                 cmd = 'update price set %s=? where mls=?' % key
                 cursor.execute(cmd, (value, mls))
-
+    
+    def runCrawler(self, crawler):
+        crawler.update(self)
 
 
 if __name__ == "__main__":
