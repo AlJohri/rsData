@@ -20,7 +20,7 @@ Schemas= {
 	    address text,
             town text, 
             state text,
-            category text,
+            style text,
             lot real,
             floor real,
             rooms real,

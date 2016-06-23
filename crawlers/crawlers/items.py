@@ -8,7 +8,26 @@
 import scrapy
 
 
-class CrawlersItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class HouseItem(scrapy.Item):
+    mls  = scrapy.Field()
+    address = scrapy.Field()
+    town = scrapy.Field()
+    state = scrapy.Field()
+    zipcode = scrapy.Field()
+    style = scrapy.Field()
+    rooms = scrapy.Field()
+    bedrooms = scrapy.Field()
+    bathrooms = scrapy.Field()
+    basement = scrapy.Field()
+    garage = scrapy.Field()
+    heatcool = scrapy.Field()
+    utility = scrapy.Field()
+    yearbuilt = scrapy.Field()
+    tax = scrapy.Field()
+    images = scrapy.Field()
+
+class MlsHistoryItem(scrapy.Item):
+    mls = scrapy.Item()
+    data = scrapy.Item()
+    price = scrapy.Item()
+    status = scrapy.Item()
