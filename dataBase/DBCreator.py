@@ -4,53 +4,68 @@
 import sqlite3 as sql
 import sys
 from optparse import OptionParser
+from collections import OrderedDict
 
 # table name to schema mapping
-Schemas= {   
-'housemls':
-	    '''
-	    houseID int,
-            mls text,
-            FOREIGN KEY (houseID) REFERENCES houses(houseID)
-            ''',
+Schemas= OrderedDict()    
 
-'houses':
-	    '''
-            houseID int primary key,
-	    address text,
-            town text, 
-            state text,
-            style text,
-            lot real,
-            floor real,
-            rooms real,
-            bedrooms real,
-            bathrooms real,
-            attic text,
-            basement text,
-            garage text,
-            heatcool text,
-            utility text,
-            yearbuilt int,
-            tax  int,
-            schoolH int,
-            schoolM int,
-            schoolE int,
-            floodzone int,
-            rent int,
-            images blob,
-            CONSTRAINT uniqAddress  UNIQUE ( address, town, state )
-            ''',
-    
+# house id to house location map
+Schemas['houses'] =\
+'''
+houseID int primary key,
+address text,
+town text, 
+state text,
+CONSTRAINT uniqAddress  UNIQUE ( address, town, state )
+'''
 
-'mlshistory':
-	    '''
-            mls text,
-	    Date date,
-	    Price int,
-	    status text
-	    '''
-}
+# snapshot of all information for the mls.
+# notice that for a location, the house can go through renovations,
+# therefore, the mls the sole reference for the condition of the house that being sold 
+# at the given time. 
+# All relavent infomation are stored and should be enough to decide whether it is a good investment. 
+Schemas['mlsInfo']=\
+'''
+mls text primary key,
+style text,
+lot real,
+floor real,
+rooms real,
+bedrooms real,
+bathrooms real,
+attic text,
+basement text,
+garage text,
+heatcool text,
+utility text,
+yearbuilt int,
+tax  int,
+schoolH int,
+schoolM int,
+schoolE int,
+floodzone int,
+estimaterent int,
+images blob
+'''
+
+# a house can be listed by multiple mlses
+Schemas['housemls']=\
+'''
+houseID int,
+mls text,
+FOREIGN KEY (houseID) REFERENCES houses(houseID),
+FOREIGN KEY (mls) REFERENCES mlsInfo(mls)
+'''
+
+# a single mls can have multiple list status
+Schemas['mlshistory']=\
+'''
+mls text,
+Date date,
+Price int,
+status text,
+FOREIGN KEY (mls) REFERENCES mlsInfo(mls)
+'''
 
 class SqlTable(object):
     
@@ -96,6 +111,7 @@ def main():
 				if options.force:
 					table_schema.delete(conn)
 				table_schema.create(conn)
+                                print >> sys.stdout, "created table %s" % itera
 
     
 
