@@ -1,11 +1,5 @@
-# -*- coding: utf-8 -*-
+from DBAccessor import DBAccessor
 
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-
-
-class CrawlersPipeline(object):
+class DataBasePipeline(object):
     def process_item(self, item, spider):
-        return item
+        item.update_data_base(db

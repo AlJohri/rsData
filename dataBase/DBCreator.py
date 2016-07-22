@@ -5,6 +5,7 @@ import sqlite3 as sql
 import sys
 from optparse import OptionParser
 from collections import OrderedDict
+import defs
 
 # table name to schema mapping
 Schemas= OrderedDict()    
@@ -93,11 +94,13 @@ def main():
 	if options.list:    
 		print "Tables in schemas are: " + str(Schemas.keys())
 		sys.exit(1)
-	if len(args) != 1:
+	if len(args) > 1:
 		parser.print_help()
 		sys.exit(1)
-
-	dbname = args[0]
+        elif len(args) == 1:
+            dbname = args[0]
+        else:
+            dbname = defs.DBname
 	
 	
 	with sql.connect( dbname ) as conn:

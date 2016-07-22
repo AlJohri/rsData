@@ -1,17 +1,45 @@
 #!/usr/bin/env python 
 import sqlite3 as sql 
 import sys
+import defs
 import logging
 import logging.handlers
 
+class DBAccessError(Exception):
+    pass
+
 class DBAccessor(object):
 
-    def __init__(self, dbname) :
-        self.dbname = dbname
+    def __init__(self, dbname='') :
+        self.dbname = dbname if dbname else defs.DBname
+    
+
+    def open(self):
+        self.conn = sql.connect(self.dbname )
+        self.cursor = conn.cursor()
+
+    def close(self):
+        self.conn.commit()
+        self.conn.close()
+        
+    
+    def __enter__(self):
+        self.open()
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close() 
+
 
     
+    def update_table(self, tablename, key, value ):
+        
+        cmd = 'insert into %s (%s) values (?)' % ( tablename, key )
+        self.cursor.execute( cmd, (value, ) )
+        self.conn.commit()
+
     def isMLSExisted(self, mls):
-        with sql.connect(self.DBNAME) as conn:
+        with sql.connect(self.dbname) as conn:
             cursor= conn.cursor()
             cmd = 'select count(mls) from houses where mls =?'
             r = cursor.execute(cmd, (mls,))
@@ -22,7 +50,7 @@ class DBAccessor(object):
     
     def getSelect(self, cmd, values=()):
 
-        with sql.connect(self.DBNAME) as conn:
+        with sql.connect(self.dbname) as conn:
             cursor= conn.cursor()
             if values:
                 r = cursor.execute(cmd, values)
@@ -34,7 +62,7 @@ class DBAccessor(object):
         
 
     def insertMLS(self, mls):
-        with sql.connect(self.DBNAME) as conn:
+        with sql.connect(self.dbname) as conn:
             cursor= conn.cursor()
 
             cmd1 = 'insert into houses (mls) values (?)'
@@ -44,7 +72,7 @@ class DBAccessor(object):
             cursor.execute(cmd2, (mls,))
     
     def updateHouseInfo(self, mls, key, value):
-        with sql.connect(self.DBNAME) as conn:
+        with sql.connect(self.dbname) as conn:
             cursor= conn.cursor()
 
             if key not in self.houseKeys:
@@ -54,7 +82,7 @@ class DBAccessor(object):
                 cursor.execute(cmd, (value, mls))
 
     def updatePriceInfo(self, mls, key, value):
-        with sql.connect(self.DBNAME) as conn:
+        with sql.connect(self.dbname) as conn:
             cursor= conn.cursor()
 
             if key not in self.priceKeys:
@@ -63,37 +91,3 @@ class DBAccessor(object):
                 cmd = 'update price set %s=? where mls=?' % key
                 cursor.execute(cmd, (value, mls))
     
-    def runCrawler(self, crawler):
-        crawler.update(self)
-
-
-if __name__ == "__main__":
-    
-    if len(sys.argv) == 1:
-        print >> sys.stderr, "table list: houses, price"
-        sys.exit(1)
-    
-    LOG_FILENAME="houseDB.log"
-
-    handler= logging.handlers.RotatingFileHandler(
-                             LOG_FILENAME,
-                             maxBytes=10000000,
-                             backupCount=5)
-    formatter=logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    
-    db= DBAccessor(handler) 
-    funs={"houses": db.reCreateHouseTable , "price": db.reCreatePriceTable }
-    
-    
-
-    for i in sys.argv[1:]:
-        if funs.has_key(i):
-            funs[i]()
-        else:
-            print >> sys.stderr, "unknow table name %s " % i
-
-
-
-
-

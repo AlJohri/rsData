@@ -26,8 +26,16 @@ class HouseItem(scrapy.Item):
     tax = scrapy.Field()
     images = scrapy.Field()
 
+    def update_data_base(self, db ):
+        print self['mls']
+        pass
+
 class MlsHistoryItem(scrapy.Item):
-    mls = scrapy.Item()
-    data = scrapy.Item()
-    price = scrapy.Item()
-    status = scrapy.Item()
+    mls = scrapy.Field()
+    date = scrapy.Field()
+    price = scrapy.Field()
+    status = scrapy.Field()
+
+    def update_data_base(self, db ):
+        print self['mls']
+        pass
