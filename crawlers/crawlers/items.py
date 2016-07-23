@@ -7,7 +7,6 @@
 
 import scrapy
 
-
 class HouseItem(scrapy.Item):
     mls  = scrapy.Field()
     address = scrapy.Field()

@@ -9,10 +9,15 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
+import sys
+
 BOT_NAME = 'crawlers'
 
 SPIDER_MODULES = ['crawlers.spiders']
 NEWSPIDER_MODULE = 'crawlers.spiders'
+
+# DB accessor path
+sys.path.append('../dataBase')
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
