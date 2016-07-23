@@ -11,12 +11,12 @@ import defs
 Schemas= OrderedDict()    
 
 # house id to house location map
-Schemas['houses'] =\
+Schemas['house'] =\
 '''
-houseID int primary key,
-address text,
-town text, 
-state text,
+houseID integer primary key autoincrement not null,
+address text not null,
+town text not null, 
+state text not null,
 CONSTRAINT uniqAddress  UNIQUE ( address, town, state )
 '''
 
@@ -27,7 +27,7 @@ CONSTRAINT uniqAddress  UNIQUE ( address, town, state )
 # All relavent infomation are stored and should be enough to decide whether it is a good investment. 
 Schemas['mlsInfo']=\
 '''
-mls text primary key,
+mls int primary key not null,
 style text,
 lot real,
 floor real,
@@ -45,25 +45,25 @@ schoolH int,
 schoolM int,
 schoolE int,
 floodzone int,
-estimaterent int,
+listrent int,
 images blob
 '''
 
 # a house can be listed by multiple mlses
-Schemas['housemls']=\
+Schemas['houseMls']=\
 '''
-houseID int,
-mls text,
-FOREIGN KEY (houseID) REFERENCES houses(houseID),
+houseID int not null,
+mls int not null,
+FOREIGN KEY (houseID) REFERENCES house(houseID),
 FOREIGN KEY (mls) REFERENCES mlsInfo(mls)
 '''
 
 # a single mls can have multiple list status
 Schemas['mlshistory']=\
 '''
-mls text,
-Date date,
-Price int,
+mls int not null,
+date date,
+price int,
 status text,
 FOREIGN KEY (mls) REFERENCES mlsInfo(mls)
 '''
