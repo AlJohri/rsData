@@ -12,13 +12,17 @@ class TestDBModels(unittest.TestCase):
 
 
     def tearDown(self):
+        database.close()
         os.remove( self.dbname )
 
     def test_house_table(self):
-        house = House.create(address= '120 13th',
-                             town = 'newark', 
-                             state = 'nj'
-                             )
+        address= '120 13th'
+        town= 'newark'
+        state= 'nj'
+
+        house = House.create( address = address, town = town, state = state)
         house.save()
-        for h in House.select():
-            print h.address, h.houseid, h.state, h.town
+        data =   House.get( House.state == 'nj')
+        self.assertEqual( address, data.address )
+        self.assertEqual( town , data.town )
+        self.assertEqual( state, data.state)
