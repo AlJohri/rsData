@@ -1,7 +1,7 @@
 from peewee import *
 import defs
 
-database = SqliteDatabase( defs.DBname , **{})
+database = SqliteDatabase(None)
 
 
 class BaseModel(Model):
