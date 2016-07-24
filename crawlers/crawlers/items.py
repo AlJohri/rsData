@@ -8,8 +8,9 @@
 import scrapy
 from DB_models import House, Mlsinfo, Housemls, Mlshistory
 import logging
+import peewee
 
-Logger = logging.getlogger(__name__)
+Logger = logging.getLogger(__name__)
 
 class HouseItem(scrapy.Item):
     mls  = scrapy.Field()
@@ -31,17 +32,32 @@ class HouseItem(scrapy.Item):
 
     def update_data_base(self):
         try:
-            House.create( address = self['address'],
+            house = House.create( address = self['address'],
                           state = self['state'],
                           town = self['town'],
                           zipcode = self['zipcode'],
-                        ).save()
-            Mlsinfo.create( mls = self['mls'], 
-                            style = self.get('style', None ),
-                        ).save()
+                        )
+            mls = Mlsinfo.create( mls = self['mls'] )
+            
+            housemls = Housemls.create(houseid = house, 
+                                       mls = mls 
+                                      )
 
-        except KeyError as e:
+
+        except (KeyError, peewee.IntegrityError ) as e:
             Logger.ERROR(e)
+        
+        Mlsinfo.update( style       = self.get('style', None ),
+                        rooms       = self.get('rooms', None ),
+                        bedrooms    = self.get('bedrooms', None ),
+                        bathrooms   = self.get('bathrooms', None ),
+                        basement    = self.get('basement', None ),
+                        garage      = self.get('garage', None ),
+                        heatcool    = self.get('heatcool', None ),
+                        utility     = self.get('utility', None ),
+                        yearbuilt   = self.get('yearbuilt', None ),
+                        tax         = self.get('tax', None ),
+                     ).where( Mlsinfo.mls == self['mls'] )
             
 
 class MlsHistoryItem(scrapy.Item):
@@ -51,5 +67,9 @@ class MlsHistoryItem(scrapy.Item):
     status = scrapy.Field()
 
     def update_data_base(self):
-        print self['mls']
-        pass
+        try:        
+            mlshistory = Mlshistory.create( **self ) 
+
+        except peewee.IntegrityError as e:
+            Logger.ERROR(e)
+                                        

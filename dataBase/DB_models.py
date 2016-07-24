@@ -13,10 +13,10 @@ class House(BaseModel):
     house id to house location map
     '''
     houseid = PrimaryKeyField()
-    address = TextField()
-    state = TextField()
-    town = TextField()
-    zipcode = TextField(index=True)
+    address = FixedCharField()
+    state = FixedCharField()
+    town = FixedCharField()
+    zipcode = FixedCharField(index=True)
 
     class Meta:
         indexes = (
@@ -31,7 +31,7 @@ class Mlsinfo(BaseModel):
     at the given time. 
     All relavent infomation are stored and should be enough to decide whether it is a good investment. 
     '''
-    mls = PrimaryKeyField()
+    mls = FixedCharField( primary_key = True ) 
     attic = TextField(null=True)
     basement = TextField(null=True)
     bathrooms = FloatField(null=True)
@@ -60,6 +60,11 @@ class Housemls(BaseModel):
     houseid = ForeignKeyField(rel_model=House, to_field='houseid')
     mls = ForeignKeyField(rel_model=Mlsinfo, to_field='mls')
 
+    class Meta:
+        indexes = (
+            (('houseid', 'mls'), True),
+        )
+
 
 class Mlshistory(BaseModel):
     '''
@@ -70,3 +75,7 @@ class Mlshistory(BaseModel):
     price = IntegerField(null=True)
     status = TextField(null=True)
 
+    class Meta:
+        indexes = (
+            (('mls', 'date'), True),
+        )
