@@ -6,6 +6,10 @@
 # http://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from DB_models import House, Mlsinfo, Housemls, Mlshistory
+import logging
+
+Logger = logging.getlogger(__name__)
 
 class HouseItem(scrapy.Item):
     mls  = scrapy.Field()
@@ -25,9 +29,20 @@ class HouseItem(scrapy.Item):
     tax = scrapy.Field()
     images = scrapy.Field()
 
-    def update_data_base(self, db ):
-        print self['mls']
-        pass
+    def update_data_base(self):
+        try:
+            House.create( address = self['address'],
+                          state = self['state'],
+                          town = self['town'],
+                          zipcode = self['zipcode'],
+                        ).save()
+            Mlsinfo.create( mls = self['mls'], 
+                            style = self.get('style', None ),
+                        ).save()
+
+        except KeyError as e:
+            Logger.ERROR(e)
+            
 
 class MlsHistoryItem(scrapy.Item):
     mls = scrapy.Field()
@@ -35,6 +50,6 @@ class MlsHistoryItem(scrapy.Item):
     price = scrapy.Field()
     status = scrapy.Field()
 
-    def update_data_base(self, db ):
+    def update_data_base(self):
         print self['mls']
         pass

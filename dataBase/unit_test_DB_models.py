@@ -1,5 +1,6 @@
 import unittest
 import peewee
+import DB_models
 from  DB_models import database, House, Mlsinfo, Housemls, Mlshistory
 import os
 
@@ -19,10 +20,12 @@ class TestDBModels(unittest.TestCase):
         address= '120 13th'
         town= 'newark'
         state= 'nj'
+        zipcode = '07123'
 
-        house = House.create( address = address, town = town, state = state)
+        house = House.create( address = address, town = town, state = state, zipcode = zipcode)
         house.save()
         data =   House.get( House.state == 'nj')
         self.assertEqual( address, data.address )
         self.assertEqual( town , data.town )
         self.assertEqual( state, data.state)
+        self.assertEqual( zipcode, data.zipcode)
