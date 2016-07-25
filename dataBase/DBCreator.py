@@ -1,85 +1,20 @@
 #!/usr/bin/env python
 # create Database 
 # This file is modified by Cherry
-import sqlite3 as sql
 import sys
 from optparse import OptionParser
 from collections import OrderedDict
 import defs
+import DB_models
 
-# table name to schema mapping
-Schemas= OrderedDict()    
+Schemas = OrderedDict()
 
-# house id to house location map
-Schemas['house'] =\
-'''
-houseID integer primary key autoincrement not null,
-address text not null,
-town text not null, 
-state text not null,
-CONSTRAINT uniqAddress  UNIQUE ( address, town, state )
-'''
+Schemas['House']      = DB_models.House
+Schemas['Mlsinfo']    = DB_models.Mlsinfo
+Schemas['Housemls']   = DB_models.Housemls
+Schemas['Mlshistory'] = DB_models.Mlshistory
+Schemas['MlsImage']   = DB_models.MlsImage
 
-# snapshot of all information for the mls.
-# notice that for a location, the house can go through renovations,
-# therefore, the mls the sole reference for the condition of the house that being sold 
-# at the given time. 
-# All relavent infomation are stored and should be enough to decide whether it is a good investment. 
-Schemas['mlsInfo']=\
-'''
-mls int primary key not null,
-style text,
-lot real,
-floor real,
-rooms real,
-bedrooms real,
-bathrooms real,
-attic text,
-basement text,
-garage text,
-heatcool text,
-utility text,
-yearbuilt int,
-tax  int,
-schoolH int,
-schoolM int,
-schoolE int,
-floodzone int,
-listrent int,
-images blob
-'''
-
-# a house can be listed by multiple mlses
-Schemas['houseMls']=\
-'''
-houseID int not null,
-mls int not null,
-FOREIGN KEY (houseID) REFERENCES house(houseID),
-FOREIGN KEY (mls) REFERENCES mlsInfo(mls)
-'''
-
-# a single mls can have multiple list status
-Schemas['mlshistory']=\
-'''
-mls int not null,
-date date,
-price int,
-status text,
-FOREIGN KEY (mls) REFERENCES mlsInfo(mls)
-'''
-
-class SqlTable(object):
-    
-    def __init__(self, table_name, schema ):
-        self.table_name = table_name
-        self.schema = schema
-
-    
-    def create( self, cursor):
-        cursor.execute('create table %s (%s)' % ( self.table_name, self.schema ))
-        
-    def delete( self, cursor):
-        cursor.execute('drop table if exists %s' % ( self.table_name ))
 
 def table_callback(option, opt, value, parser):
 	setattr(parser.values, option.dest, value.split(','))
@@ -99,22 +34,22 @@ def main():
 		sys.exit(1)
         elif len(args) == 1:
             dbname = args[0]
+            DB_models.database.init(dbname)
         else:
             dbname = defs.DBname
 	
-	
-	with sql.connect( dbname ) as conn:
-		if not options.table:
-			options.table = Schemas.keys()
-		for itera in options.table:
-			if not Schemas.get(itera, False):
-				print >> sys.stderr,"Table: %s does not exist!" %(itera)
-			else:
-				table_schema = SqlTable(itera, Schemas[itera])
-				if options.force:
-					table_schema.delete(conn)
-				table_schema.create(conn)
-                                print >> sys.stdout, "created table %s" % itera
+        if not options.table:
+                options.table = Schemas.keys()
+        for table_name in options.table:
+                if not Schemas.get(table_name, False):
+                        print >> sys.stderr,"Table: %s does not exist!" %(table_name)
+                else:
+                        if options.force:
+                            with sql.connect( dbname ) as conn:
+                                conn.execute('drop table if exists %s' % ( table_name ) )
+
+                        Schemas[table_name].create_table()
+                        print >> sys.stdout, "created table %s" % table_name
 
     
 

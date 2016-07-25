@@ -1,6 +1,8 @@
-from DBAccessor import DBAccessor
+import logging
+
+Logger = logging.getLogger(__name__)
 
 class DataBasePipeline(object):
     def process_item(self, item, spider):
-        with DBAccessor() as db:
-            item.update_data_base(db)
+        Logger.debug( item )
+        item.update_data_base()
