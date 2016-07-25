@@ -40,7 +40,6 @@ class Mlsinfo(BaseModel):
     floor = FloatField(null=True)
     garage = TextField(null=True)
     heatcool = TextField(null=True)
-    images = BlobField(null=True)
     listrent = IntegerField(null=True)
     lot = FloatField(null=True)
     rooms = FloatField(null=True)
@@ -51,6 +50,13 @@ class Mlsinfo(BaseModel):
     tax = IntegerField(null=True)
     utility = TextField(null=True)
     yearbuilt = IntegerField(null=True)
+
+
+class MlsImage(BaseModel):
+    
+    mls = ForeignKeyField(rel_model=Mlsinfo, to_field='mls', related_name='images' )
+    url = CharField(unique=True)
+    image = BlobField()
 
 
 class Housemls(BaseModel):

@@ -13,6 +13,7 @@ Schemas['House']      = DB_models.House
 Schemas['Mlsinfo']    = DB_models.Mlsinfo
 Schemas['Housemls']   = DB_models.Housemls
 Schemas['Mlshistory'] = DB_models.Mlshistory
+Schemas['MlsImage']   = DB_models.MlsImage
 
 
 def table_callback(option, opt, value, parser):

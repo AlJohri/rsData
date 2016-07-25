@@ -6,4 +6,4 @@ all: .test
 
 
 run:
-	scrapy crawl njmls
+	scrapy crawl njmls -o items.json  2>&1 | tee debug.log

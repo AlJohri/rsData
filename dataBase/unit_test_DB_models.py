@@ -35,4 +35,18 @@ class TestDBModels(unittest.TestCase):
         house_duplicate = House( address = address, town = town, state = state, zipcode = zipcode)
         with self.assertRaises( peewee.IntegrityError ):
             house_duplicate.save()
+        
+    def test_mls_update(self):
+        
+        mls = '1630289'
+        mlsinfo = Mlsinfo.create( mls = mls)
+
+        self.assertEqual(None, mlsinfo.attic )
+
+        mlsinfo.attic = 'old' 
+        mlsinfo.save()
+        
+        instance = Mlsinfo.get( mls = mls )
+        self.assertEqual('old', instance.attic )
+
 

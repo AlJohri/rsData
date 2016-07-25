@@ -6,6 +6,8 @@ import re
 import  njmls_query_cfg as qc
 from crawlers.items import HouseItem, MlsHistoryItem
 
+def normalize_text( text ):
+    return ' '.join( text.strip().lower().split() )
 
 class Njmls(scrapy.Spider):
     name = "njmls"
@@ -97,26 +99,19 @@ class Njmls(scrapy.Spider):
         
         houseData = response.meta['data']
         
-        houseRlt, mls_histories = self.extract_detail_page(response.body )
-        houseData['address'] = houseRlt['address']
-        houseData['bathrooms'] = houseRlt['bathrooms']
-        houseData['bedrooms'] = houseRlt['bedrooms']
-        houseData['rooms'] = houseRlt['rooms']
-        houseData['basement'] = houseRlt['basement']
-        houseData['yearbuilt'] = houseRlt['yearbuilt']
-        houseData['heatcool'] = houseRlt['heatcool']
-        houseData['tax'] = houseRlt['tax']
+        houseRlt, mls_histories, image_links = self.extract_detail_page(response.body )
+        houseData.update( houseRlt )
 
-        yield houseData
+        houseData['images'] = image_links
 
+        houseData['mlshistories'] = []
         for history in mls_histories: 
             
             data = MlsHistoryItem()
-            data['mls'] = history['mls']
-            data['date'] = history['date']
-            data['price'] = history['price']
-            data['status'] = history['status']
-            yield data
+            data.update( history )
+            houseData['mlshistories'].append( data )
+
+        yield houseData
 
 
 
@@ -132,12 +127,15 @@ class Njmls(scrapy.Spider):
 
         for content in contents:
             key= content.string.strip()
-            value= content.nextSibling.strip()
+            value= normalize_text( content.nextSibling )
 
 
             if re.search(r'^Address', key):
                 houseRlt['address'] = value
         
+            elif re.search(r'^Style', key):
+                houseRlt['style'] = value
+
             elif re.search(r'^Rooms', key):
                 houseRlt['rooms'] = float(value)
 
@@ -168,15 +166,21 @@ class Njmls(scrapy.Spider):
         features = features.findAll('strong')
         for f in features:
             key= f.string.strip()
-            value = f.nextSibling.nextSibling.strip()
+            value = normalize_text ( f.nextSibling.nextSibling )
 
             if re.search(r'^Heat', key):
                 houseRlt['heatcool'] = value
 
             elif re.search(r'^Year', key):
                 houseRlt['yearbuilt']= int(re.search(r'(\d+)', value).group(0))
+
+            elif re.search(r'^Utilities', key):
+                houseRlt['utility'] = value
             else:
                 pass
+
+        # find images 
+        image_links = [ i.get('data-rsbigimg').replace('/h/', '/m/') for i in soup.findAll('a', {'class': 'rsImg'}) ]
         
 
         mls_history = []
@@ -189,7 +193,7 @@ class Njmls(scrapy.Spider):
             date = row.find('div', {'class': 'mls-date' } ).text.strip()
             price = row.find('div', {'class': 'mls-price' } ).text.strip()
             price = locale.atof(price.replace('$',''))
-            status = row.find('div', {'class': 'mls-status' } ).text.strip()
+            status =  normalize_text ( row.find('div', {'class': 'mls-status' } ).text )
             mls_history.append({
             'mls': mls,
             'date': date,
@@ -200,4 +204,5 @@ class Njmls(scrapy.Spider):
 
             mls_prev = mls
 
-        return (houseRlt, mls_history )
+
+        return (houseRlt, mls_history, image_links )
