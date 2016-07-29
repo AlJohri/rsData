@@ -5,6 +5,7 @@ import locale
 import re
 import  njmls_query_cfg as qc
 from crawlers.items import HouseItem, MlsHistoryItem
+from scrapy.exceptions import CloseSpider
 
 def normalize_text( text ):
     return ' '.join( text.strip().lower().split() )
@@ -17,63 +18,102 @@ class Njmls(scrapy.Spider):
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36' 
     }
 
+    def gen_query(self, city, zipcode, proptype, stat, page):
+        query = \
+        {
+    
+        'zoomlevel':0,
+        'action':'xhr.results.view.list',
+        'page':page,
+        'display':10,
+        'sortBy':'newest',
+        'location':'',
+        'city': city,
+        'state':'NJ',
+        'county':'',
+        'zipcode': zipcode,
+        'radius':'',
+        'proptype':',%s' % proptype,
+        'maxprice':'',
+        'minprice':'',
+        'beds':'',
+        'baths':'',
+        'dayssince':'',
+        'newlistings':'',
+        'pricechanged':'',
+        'keywords':'',
+        'mls_number':'',
+        'garage':'',
+        'basement':'',
+        'fireplace':'',
+        'pool':'',
+        'yearBuilt':'',
+        'building':'',
+        'officeID':'',
+        'openhouse':'',
+        'countysearch':'false',
+        'ohdate':'',
+        'style':'',
+        'emailalert_yn':'N',
+        'status':stat,
+        }
+
+        return query
+        
+
     def start_requests(self):
         for line in qc.Cities.strip().split('\n'):
             for proptype in qc.Proptyes:
                 for stat in qc.Statuses:
                     city, zipcode = line.split()
-                    query = \
-                    {
-                
-                    'zoomlevel':0,
-                    'action':'xhr.results.view.list',
-                    'page':1,
-                    'display':10,
-                    'sortBy':'newest',
-                    'location':'',
-                    'city': city,
-                    'state':'NJ',
-                    'county':'',
-                    'zipcode': zipcode,
-                    'radius':'',
-                    'proptype':',%s' % proptype,
-                    'maxprice':'',
-                    'minprice':'',
-                    'beds':'',
-                    'baths':'',
-                    'dayssince':'',
-                    'newlistings':'',
-                    'pricechanged':'',
-                    'keywords':'',
-                    'mls_number':'',
-                    'garage':'',
-                    'basement':'',
-                    'fireplace':'',
-                    'pool':'',
-                    'yearBuilt':'',
-                    'building':'',
-                    'officeID':'',
-                    'openhouse':'',
-                    'countysearch':'false',
-                    'ohdate':'',
-                    'style':'',
-                    'emailalert_yn':'N',
-                    'status':stat,
-                    }
+                    city = city.lower()
 
-                    houseData = HouseItem()
-                    houseData['town'] = city.lower()
-                    houseData['state'] = 'nj'
-                    houseData['zipcode'] = zipcode
+                    query = self.gen_query( city, zipcode, proptype, stat, 1 ) 
 
                     url = Request('GET', Njmls.URL_LISTINGS, params = query, headers = Njmls.headers ).prepare().url
 
                     request =  scrapy.Request( url  ) 
-                    request.meta['data'] = houseData
+                    request.meta['search_params'] = {
+                    'city': city,
+                    'zipcode': zipcode,
+                    'proptype': proptype,
+                    'stat': stat,
+                    }
                     yield request
+
         
-    
+   
+    def get_total_pages(self, response):
+        
+        n =  response.xpath('//div[@class="result-header"]//ol[@class="pagenumbers"]/li[@class="currentPage"]/text()').re('of (\d+)')[0]
+        return int(n)
+
     def parse(self, response):
+            
+        pages = self.get_total_pages( response )
+        self.logger.info('crawl params %s' % response.meta['search_params'] )
+        self.logger.info('total page %s' % pages )
+        
+        for page in range(1, pages+1 ):
+            search_params = response.meta['search_params'].copy()
+            search_params['page'] = page
+            query = self.gen_query( **search_params )
+
+            houseData = HouseItem()
+            houseData['town'] = search_params['city']
+            houseData['state'] = 'nj'
+            houseData['zipcode'] = search_params['zipcode']
+
+            url = Request('GET', Njmls.URL_LISTINGS, params = query, headers = Njmls.headers ).prepare().url
+
+            request =  scrapy.Request( url, callback = self.parse_listing ) 
+            request.meta['data'] = houseData
+            yield request
+        
+        
+    def parse_listing(self, response ):
+        
+        self.logger.info('crawl %s' % response.meta['search_params'])
 
         mlses = response.xpath('//div[@class]').re('houseresults listingrecord.*mls_number: \'(\d+)')
 
@@ -88,16 +128,19 @@ class Njmls(scrapy.Spider):
             houseData['mls'] = mls
 
             url = Request('GET', Njmls.URL_LISTINGS, params = query, headers = Njmls.headers ).prepare().url
-            request = scrapy.Request( url, meta = houseData , callback =  self.parse_njmls_site )
+            request = scrapy.Request( url, callback =  self.parse_njmls_site )
             request.meta['data'] = houseData
             yield request
+
             
 
     
 
     def parse_njmls_site(self, response ):
         
-        houseData = response.meta['data']
+        self.logger.info('crawl %s' % response.url )
+
+        houseData = response.meta['data'].copy()
         
         houseRlt, mls_histories, image_links = self.extract_detail_page(response.body )
         houseData.update( houseRlt )

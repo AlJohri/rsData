@@ -1,0 +1,749 @@
+
+<div class="result-header">
+    <h1>Showing 52 Results  Within  rutherford, NJ</h1>
+	
+    <div id="space"></div>
+
+    <div id="page-tab-wrap">
+
+        <ol id="toc" class="view_tabs">
+            <li class="current"><a href="#">LIST VIEW</a></li>
+            <li><a href="#">PHOTO VIEW</a></li>
+            <li id="maptab"><a href="#" onclick="javascript:RedirectMapView();">MAP VIEW</a></li>
+        </ol>
+        
+		<div id="pagelist">
+                <ol class="pagenumbers">
+                    <li class="currentPage">Pages</li>
+                    <li>1</li>
+                <li><a href="#">2</a></li> <li><a href="#">3</a></li> <li><a href="#">4</a></li> <li><a href="#">5</a></li> <li><a href="#">6</a></li> 
+                    <li class="currentPage">of 6</li>
+                </ol>
+        </div>
+	
+    </div>
+    <div id="space"></div>
+    <div class="content1">
+	   <div class="sortDisplayWrap">
+	    
+		   <div class="sortWrap" >
+			<select id="sortBySelectTop" class="sortBySelect" onchange="get_val();">
+				<option value="newest">Sort Options</option>
+				<option value="newest" selected="selected">Most Recent</option>
+				
+					<option value="pchg">Recent Price Change</option>
+				
+				<option value="price.asc">Price Low - High</option>
+				<option value="price.desc">Price High - Low</option>
+				<option value="city.az">City A - Z</option>
+				<option value="city.za">City Z - A</option>
+			</select>
+			</div>
+		
+		   <div class="displayWrap">
+			<select id="displaySelectTop" class="displaySelect">
+				<option value="10" selected="selected">10 Per Page</option>
+				<option value="20">20 Per Page</option>
+				<option value="50">50 Per Page</option>
+			</select>
+			</div>
+		</div>
+        <a id="navi-next" href="#" class="next"><img src="/img/2012/arrow-right.png" width="25" height="25" alt="Search"></a>
+        <a id="navi-prev" href="#" class="prev"><img src="/img/2012/arrow-left.png" width="25" height="25" alt="Search"></a>
+     </div>
+	
+     <div id="saves">
+        <ol>
+            <li id="compare"><a href="/listings/index.cfm?action=xhr.compare" class="fancybox navigator_compare_save" data-fancybox-type="iframe"><img src="/img/2012/compare.png" width="213" height="44" alt="Compare Listings" /></a></li>
+            <li id="save"><a href="/listings/views/xhr.fb-save-search.cfm" class="save_this_search1 fancybox.ajax"><img src="/img/2012/savesearch.png" width="115" height="25" alt="Save Search" /></a></li>
+            <li id="newsave"><a href="/listings/index.cfm?action=dsp.search"><img src="/img/2012/newsearch.png" width="120" height="25" alt="Search" /></a></li>
+        </ol>
+     </div>
+</div>
+
+<script>
+function getCookie(c_name){
+	var c_value = document.cookie;
+	var c_start = c_value.indexOf(" " + c_name + "=");
+	if (c_start == -1) {
+		c_start = c_value.indexOf(c_name + "=");
+	}
+	if (c_start == -1) {
+		c_value = null;
+	}
+	else {
+		c_start = c_value.indexOf("=", c_start) + 1;
+		var c_end = c_value.indexOf(";", c_start);
+		if (c_end == -1) {
+			c_end = c_value.length;
+		}
+		c_value = unescape(c_value.substring(c_start,c_end));
+	}
+	return c_value;
+}
+
+function setCookie(c_name,value,exdays) {
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+	document.cookie=c_name + "=" + c_value;
+}
+
+function get_val() {
+	var val_sel=document.getElementById('sortBySelectTop').value;
+	setCookie("sor_ol",val_sel,365);
+	var sort_sl=getCookie("sor_ol");
+}
+$(document).ready(function(){
+	$(".save_this_search1").fancybox({
+		maxWidth: 400,
+		maxHeight: 250,
+		fitToView: false,
+		width: '70%',
+		height: '70%',
+		autoSize: false,
+		closeClick: false,
+		openEffect: 'none',
+		closeEffect: 'none'
+	});
+
+	/*jQuery('#maptab').qtip({
+	    content: {
+	        text: 'New map features',
+	        button: true
+	    },
+	    style: {
+        classes: 'qtip-shadow qtip-rounded',
+        width: 125, // Overrides width set by CSS (but no max-width!)
+        height: 30
+
+   },
+    position: {
+        my: 'bottom left',
+        at: 'top right',
+        adjust: {
+            y: 10,
+            x: 6
+        }
+
+    },
+	    show: {
+	        ready: true
+	    },
+
+	    hide: {
+	        event: false
+	    }
+
+	});*/
+
+});
+</script>
+<div id="resultcount" style="display:none">52</div><div id="list-view-wrap"> 
+
+         <div class="houseresults listingrecord { oh: 'false', price: '$409,900', address: '33  Riverview Ave', city: 'Rutherford',state:'NJ',zip:'07070', photourl: 'http://pxlimages.xmlsweb.com/njmls/l/images/1630689.1.jpg', detailurl: '/listings/index.cfm?action=dsp.info&amp;mlsnum=1630689&dayssince=15&amp;countysearch=false', mls_number: '1630689', beds: '3', baths_full: '2', baths_part: '1', proptype: 'Col', lat: '40.824535', lng: '-74.114600' }" style="width:600px;">
+            <input type="checkbox" class="compare_listing" id="SearchResultListID_1630689" value="1630689" />
+            <label><a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630689&dayssince=15&amp;countysearch=false" style="text-decoration:none;font-weight:normal;">    $409,900 in Rutherford</a></label>
+            <div id="details">
+                <table width="100%" style="margin-top:8px;">
+                    <tr>
+                        <td width="276" style="vertical-align:top;">
+                            <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630689&dayssince=15&amp;countysearch=false">
+								<img src="http://pxlimages.xmlsweb.com/njmls/l/images/1630689.1.jpg" alt="" width="266" class="listingimg tips" title="|View Details" onerror="$(this).attr('src', '/img/2012/no_photo_sm.png');" style="max-height:196px;" />
+							</a>
+                        </td>
+                        <td style="vertical-align:top;">
+                <strong> MLS # </strong> <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630689&dayssince=15&amp;countysearch=false" style="font-size:1.0em;">1630689</a><br />
+                    33  Riverview Ave, Rutherford, NJ 07070<br />
+                   3 Bedroom, 2 Full Bath, <br />1 Half Bath, Col 
+								<br />
+								<b>Carol Hughes</b></strong>, Broker Associate<br />
+								<a href="/members/index.cfm?action=dsp.results_ofc&type=zip&officeid=59202"><b>Coccia Realty Better Homes & Gardens-Rutherford</b></a> 
+
+
+
+
+
+                    </td>
+                     </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td style="width:320px;padding-left:6px;">
+
+						<a href="/listings/index.cfm?action=xhr.listing_photos&mlsnum=1630689" class="fancybox listing-photos" data-fancybox-type="iframe"><div class="photos tips" title="|View Photo Gallery">21</div></a> <div class="nl tips" title="Listed on 7/22/16"></div> 
+                    </td>
+                    <td style="align:right;margin:0px;">
+                        
+                                <a href="javascript:;" class="save_as_favorite { mlsnum: 1630689 }"><div class="saveFavorite"></div></a>
+                        
+							<a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1630689&timestamp=1469496823682 " class="fancybox listing-map  { address: '33 Riverview Ave', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1630689', lat: '40.824535', lng: '-74.114600',oh: false,status:'A' }" data-fancybox-type="iframe">
+								<div class="mapsResults" >&nbsp;</div>
+							</a>
+						
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+
+         <div class="houseresults listingrecord { oh: 'true', price: '$785,000', address: '16 W Gouverneur Ave', city: 'Rutherford',state:'NJ',zip:'07070', photourl: 'http://pxlimages.xmlsweb.com/njmls/l/images/1630781.1.jpg', detailurl: '/listings/index.cfm?action=dsp.info&amp;mlsnum=1630781&dayssince=15&amp;countysearch=false', mls_number: '1630781', beds: '4', baths_full: '2', baths_part: '1', proptype: 'Col', lat: '40.822830', lng: '-74.117590' }" style="width:600px;">
+            <input type="checkbox" class="compare_listing" id="SearchResultListID_1630781" value="1630781" />
+            <label><a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630781&dayssince=15&amp;countysearch=false" style="text-decoration:none;font-weight:normal;">    $785,000 in Rutherford</a></label>
+            <div id="details">
+                <table width="100%" style="margin-top:8px;">
+                    <tr>
+                        <td width="276" style="vertical-align:top;">
+                            <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630781&dayssince=15&amp;countysearch=false">
+								<img src="http://pxlimages.xmlsweb.com/njmls/l/images/1630781.1.jpg" alt="" width="266" class="listingimg tips" title="|View Details" onerror="$(this).attr('src', '/img/2012/no_photo_sm.png');" style="max-height:196px;" />
+							</a>
+                        </td>
+                        <td style="vertical-align:top;">
+                <strong> MLS # </strong> <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630781&dayssince=15&amp;countysearch=false" style="font-size:1.0em;">1630781</a><br />
+                    16 W Gouverneur Ave, Rutherford, NJ 07070<br />
+                   4 Bedroom, 2 Full Bath, <br />1 Half Bath, Col 
+								<br />
+								<b>Christie Fusaro</b></strong>, Sales Associate<br />
+								<a href="/members/index.cfm?action=dsp.results_ofc&type=zip&officeid=59202"><b>Coccia Realty Better Homes & Gardens-Rutherford</b></a> 
+								            <li><strong>Open House:</strong></span> 1:00 P.M. - 4:00 P.M. Sun. 7/31<br />
+								        
+
+
+
+
+
+                    </td>
+                     </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td style="width:320px;padding-left:6px;">
+
+						<a href="/listings/index.cfm?action=xhr.listing_photos&mlsnum=1630781" class="fancybox listing-photos" data-fancybox-type="iframe"><div class="photos tips" title="|View Photo Gallery">25</div></a> <div class="nl tips" title="Listed on 7/22/16"></div> <a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1630781&timestamp=1469496823682" style="float:left;" class="fancybox listing-map  { address: '16 W Gouverneur Ave', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1630781', lat: '40.822830', lng: '-74.117590',oh: true }" data-fancybox-type="iframe"><div class="oh tips" title="|Click for Open House details"></div></a> 
+                    </td>
+                    <td style="align:right;margin:0px;">
+                        
+                                <a href="javascript:;" class="save_as_favorite { mlsnum: 1630781 }"><div class="saveFavorite"></div></a>
+                        
+							<a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1630781&timestamp=1469496823682 " class="fancybox listing-map  { address: '16 W Gouverneur Ave', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1630781', lat: '40.822830', lng: '-74.117590',oh: true,status:'A' }" data-fancybox-type="iframe">
+								<div class="mapsResults" >&nbsp;</div>
+							</a>
+						
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+
+         <div class="houseresults listingrecord { oh: 'false', price: '$599,000', address: '222 W Passaic Ave', city: 'Rutherford',state:'NJ',zip:'07070', photourl: 'http://pxlimages.xmlsweb.com/njmls/l/images/1630148.1.jpg', detailurl: '/listings/index.cfm?action=dsp.info&amp;mlsnum=1630148&dayssince=15&amp;countysearch=false', mls_number: '1630148', beds: '3', baths_full: '1', baths_part: '1', proptype: 'Col', lat: '40.831321', lng: '-74.115700' }" style="width:600px;">
+            <input type="checkbox" class="compare_listing" id="SearchResultListID_1630148" value="1630148" />
+            <label><a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630148&dayssince=15&amp;countysearch=false" style="text-decoration:none;font-weight:normal;">    $599,000 in Rutherford</a></label>
+            <div id="details">
+                <table width="100%" style="margin-top:8px;">
+                    <tr>
+                        <td width="276" style="vertical-align:top;">
+                            <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630148&dayssince=15&amp;countysearch=false">
+								<img src="http://pxlimages.xmlsweb.com/njmls/l/images/1630148.1.jpg" alt="" width="266" class="listingimg tips" title="|View Details" onerror="$(this).attr('src', '/img/2012/no_photo_sm.png');" style="max-height:196px;" />
+							</a>
+                        </td>
+                        <td style="vertical-align:top;">
+                <strong> MLS # </strong> <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630148&dayssince=15&amp;countysearch=false" style="font-size:1.0em;">1630148</a><br />
+                    222 W Passaic Ave, Rutherford, NJ 07070<br />
+                   3 Bedroom, 1 Full Bath, <br />1 Half Bath, Col 
+								<br />
+								<a href="/members/index.cfm?action=dsp.info&id=341210    "><b>Erin Petrosino</b></a></strong>, Sales Associate<br />
+								<a href="/members/index.cfm?action=dsp.results_ofc&type=zip&officeid=59202"><b>Coccia Realty Better Homes & Gardens-Rutherford</b></a> 
+
+
+
+
+
+                    </td>
+                     </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td style="width:320px;padding-left:6px;">
+
+						<a href="/listings/index.cfm?action=xhr.listing_photos&mlsnum=1630148" class="fancybox listing-photos" data-fancybox-type="iframe"><div class="photos tips" title="|View Photo Gallery">20</div></a> <div class="nl tips" title="Listed on 7/19/16"></div> 
+                    </td>
+                    <td style="align:right;margin:0px;">
+                        
+                                <a href="javascript:;" class="save_as_favorite { mlsnum: 1630148 }"><div class="saveFavorite"></div></a>
+                        
+							<a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1630148&timestamp=1469496823682 " class="fancybox listing-map  { address: '222 W Passaic Ave', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1630148', lat: '40.831321', lng: '-74.115700',oh: false,status:'A' }" data-fancybox-type="iframe">
+								<div class="mapsResults" >&nbsp;</div>
+							</a>
+						
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+
+         <div class="houseresults listingrecord { oh: 'false', price: '$759,000', address: '121  Irving Pl', city: 'Rutherford',state:'NJ',zip:'07070', photourl: 'http://pxlimages.xmlsweb.com/njmls/l/images/1630166.1.jpg', detailurl: '/listings/index.cfm?action=dsp.info&amp;mlsnum=1630166&dayssince=15&amp;countysearch=false', mls_number: '1630166', beds: '4', baths_full: '3', baths_part: '1', proptype: 'Col', lat: '40.831558', lng: '-74.107250' }" style="width:600px;">
+            <input type="checkbox" class="compare_listing" id="SearchResultListID_1630166" value="1630166" />
+            <label><a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630166&dayssince=15&amp;countysearch=false" style="text-decoration:none;font-weight:normal;">    $759,000 in Rutherford</a></label>
+            <div id="details">
+                <table width="100%" style="margin-top:8px;">
+                    <tr>
+                        <td width="276" style="vertical-align:top;">
+                            <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630166&dayssince=15&amp;countysearch=false">
+								<img src="http://pxlimages.xmlsweb.com/njmls/l/images/1630166.1.jpg" alt="" width="266" class="listingimg tips" title="|View Details" onerror="$(this).attr('src', '/img/2012/no_photo_sm.png');" style="max-height:196px;" />
+							</a>
+                        </td>
+                        <td style="vertical-align:top;">
+                <strong> MLS # </strong> <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1630166&dayssince=15&amp;countysearch=false" style="font-size:1.0em;">1630166</a><br />
+                    121  Irving Pl, Rutherford, NJ 07070<br />
+                   4 Bedroom, 3 Full Bath, <br />1 Half Bath, Col 
+								<br />
+								<b>John Ehret</b></strong>, Sales Associate<br />
+								<a href="/members/index.cfm?action=dsp.results_ofc&type=zip&officeid=2504"><b>RE/MAX Infinity</b></a> 
+
+
+
+
+
+                    </td>
+                     </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td style="width:320px;padding-left:6px;">
+
+						<a href="/listings/index.cfm?action=xhr.listing_photos&mlsnum=1630166" class="fancybox listing-photos" data-fancybox-type="iframe"><div class="photos tips" title="|View Photo Gallery">14</div></a> <div class="nl tips" title="Listed on 7/19/16"></div> 
+                    </td>
+                    <td style="align:right;margin:0px;">
+                        
+                                <a href="javascript:;" class="save_as_favorite { mlsnum: 1630166 }"><div class="saveFavorite"></div></a>
+                        
+							<a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1630166&timestamp=1469496823682 " class="fancybox listing-map  { address: '121 Irving Pl', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1630166', lat: '40.831558', lng: '-74.107250',oh: false,status:'A' }" data-fancybox-type="iframe">
+								<div class="mapsResults" >&nbsp;</div>
+							</a>
+						
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+
+         <div class="houseresults listingrecord { oh: 'false', price: '$569,000', address: '115  Mortimer Ave', city: 'Rutherford',state:'NJ',zip:'07070', photourl: 'http://pxlimages.xmlsweb.com/njmls/l/images/1629918.1.jpg', detailurl: '/listings/index.cfm?action=dsp.info&amp;mlsnum=1629918&dayssince=15&amp;countysearch=false', mls_number: '1629918', beds: '3', baths_full: '1', baths_part: '2', proptype: 'Col', lat: '40.830871', lng: '-74.106690' }" style="width:600px;">
+            <input type="checkbox" class="compare_listing" id="SearchResultListID_1629918" value="1629918" />
+            <label><a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1629918&dayssince=15&amp;countysearch=false" style="text-decoration:none;font-weight:normal;">    $569,000 in Rutherford</a></label>
+            <div id="details">
+                <table width="100%" style="margin-top:8px;">
+                    <tr>
+                        <td width="276" style="vertical-align:top;">
+                            <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1629918&dayssince=15&amp;countysearch=false">
+								<img src="http://pxlimages.xmlsweb.com/njmls/l/images/1629918.1.jpg" alt="" width="266" class="listingimg tips" title="|View Details" onerror="$(this).attr('src', '/img/2012/no_photo_sm.png');" style="max-height:196px;" />
+							</a>
+                        </td>
+                        <td style="vertical-align:top;">
+                <strong> MLS # </strong> <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1629918&dayssince=15&amp;countysearch=false" style="font-size:1.0em;">1629918</a><br />
+                    115  Mortimer Ave, Rutherford, NJ 07070<br />
+                   3 Bedroom, 1 Full Bath, <br />2 Half Bath, Col 
+								<br />
+								<b>Sean Alberti</b></strong>, Sales Associate<br />
+								<a href="/members/index.cfm?action=dsp.results_ofc&type=zip&officeid=2417"><b>Cappiello Real Estate Services, LLC</b></a> 
+
+
+
+
+
+                    </td>
+                     </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td style="width:320px;padding-left:6px;">
+
+						<a href="/listings/index.cfm?action=xhr.listing_photos&mlsnum=1629918" class="fancybox listing-photos" data-fancybox-type="iframe"><div class="photos tips" title="|View Photo Gallery">22</div></a> <div class="nl tips" title="Listed on 7/17/16"></div> 
+                    </td>
+                    <td style="align:right;margin:0px;">
+                        
+                                <a href="javascript:;" class="save_as_favorite { mlsnum: 1629918 }"><div class="saveFavorite"></div></a>
+                        
+							<a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1629918&timestamp=1469496823698 " class="fancybox listing-map  { address: '115 Mortimer Ave', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1629918', lat: '40.830871', lng: '-74.106690',oh: false,status:'A' }" data-fancybox-type="iframe">
+								<div class="mapsResults" >&nbsp;</div>
+							</a>
+						
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+
+         <div class="houseresults listingrecord { oh: 'false', price: '$334,900', address: '194  Springfield Ave', city: 'Rutherford',state:'NJ',zip:'07070', photourl: 'http://pxlimages.xmlsweb.com/njmls/l/images/1628800.1.jpg', detailurl: '/listings/index.cfm?action=dsp.info&amp;mlsnum=1628800&dayssince=15&amp;countysearch=false', mls_number: '1628800', beds: '4', baths_full: '2', baths_part: '0', proptype: 'C/C', lat: '40.834804', lng: '-74.116410' }" style="width:600px;">
+            <input type="checkbox" class="compare_listing" id="SearchResultListID_1628800" value="1628800" />
+            <label><a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628800&dayssince=15&amp;countysearch=false" style="text-decoration:none;font-weight:normal;">    $334,900 in Rutherford</a></label>
+            <div id="details">
+                <table width="100%" style="margin-top:8px;">
+                    <tr>
+                        <td width="276" style="vertical-align:top;">
+                            <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628800&dayssince=15&amp;countysearch=false">
+								<img src="http://pxlimages.xmlsweb.com/njmls/l/images/1628800.1.jpg" alt="" width="266" class="listingimg tips" title="|View Details" onerror="$(this).attr('src', '/img/2012/no_photo_sm.png');" style="max-height:196px;" />
+							</a>
+                        </td>
+                        <td style="vertical-align:top;">
+                <strong> MLS # </strong> <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628800&dayssince=15&amp;countysearch=false" style="font-size:1.0em;">1628800</a><br />
+                    194  Springfield Ave, Rutherford, NJ 07070<br />
+                   4 Bedroom, 2 Full Bath, C/C 
+								<br />
+								<a href="/members/index.cfm?action=dsp.info&id=1011834   "><b>Nancy Rodriguez</b></a></strong>, Sales Associate<br />
+								<a href="/members/index.cfm?action=dsp.results_ofc&type=zip&officeid=890"><b>Nicholas Real Estate Agency</b></a> 
+
+
+
+
+
+                    </td>
+                     </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td style="width:320px;padding-left:6px;">
+
+						<a href="/listings/index.cfm?action=xhr.listing_photos&mlsnum=1628800" class="fancybox listing-photos" data-fancybox-type="iframe"><div class="photos tips" title="|View Photo Gallery">4</div></a> <div class="nl tips" title="Listed on 7/11/16"></div> 
+                    </td>
+                    <td style="align:right;margin:0px;">
+                        
+                                <a href="javascript:;" class="save_as_favorite { mlsnum: 1628800 }"><div class="saveFavorite"></div></a>
+                        
+							<a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1628800&timestamp=1469496823698 " class="fancybox listing-map  { address: '194 Springfield Ave', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1628800', lat: '40.834804', lng: '-74.116410',oh: false,status:'A' }" data-fancybox-type="iframe">
+								<div class="mapsResults" >&nbsp;</div>
+							</a>
+						
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+
+         <div class="houseresults listingrecord { oh: 'false', price: '$585,000', address: '78  Lincoln Ave', city: 'Rutherford',state:'NJ',zip:'07070', photourl: 'http://pxlimages.xmlsweb.com/njmls/l/images/1628839.1.jpg', detailurl: '/listings/index.cfm?action=dsp.info&amp;mlsnum=1628839&dayssince=15&amp;countysearch=false', mls_number: '1628839', beds: '4', baths_full: '2', baths_part: '1', proptype: 'Col', lat: '40.823963', lng: '-74.109530' }" style="width:600px;">
+            <input type="checkbox" class="compare_listing" id="SearchResultListID_1628839" value="1628839" />
+            <label><a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628839&dayssince=15&amp;countysearch=false" style="text-decoration:none;font-weight:normal;">    $585,000 in Rutherford</a></label>
+            <div id="details">
+                <table width="100%" style="margin-top:8px;">
+                    <tr>
+                        <td width="276" style="vertical-align:top;">
+                            <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628839&dayssince=15&amp;countysearch=false">
+								<img src="http://pxlimages.xmlsweb.com/njmls/l/images/1628839.1.jpg" alt="" width="266" class="listingimg tips" title="|View Details" onerror="$(this).attr('src', '/img/2012/no_photo_sm.png');" style="max-height:196px;" />
+							</a>
+                        </td>
+                        <td style="vertical-align:top;">
+                <strong> MLS # </strong> <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628839&dayssince=15&amp;countysearch=false" style="font-size:1.0em;">1628839</a><br />
+                    78  Lincoln Ave, Rutherford, NJ 07070<br />
+                   4 Bedroom, 2 Full Bath, <br />1 Half Bath, Col 
+								<br />
+								<b>Peter S Van Winkle</b></strong>, Broker Associate<br />
+								<b>Thomas Steimle</b>, Sales Associate<br /> <a href="/members/index.cfm?action=dsp.results_ofc&type=zip&officeid=930"><b>A.W. Van Winkle & Company</b></a> 
+
+
+
+
+
+                    </td>
+                     </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td style="width:320px;padding-left:6px;">
+
+						<a href="/listings/index.cfm?action=xhr.listing_photos&mlsnum=1628839" class="fancybox listing-photos" data-fancybox-type="iframe"><div class="photos tips" title="|View Photo Gallery">23</div></a> <div class="nl tips" title="Listed on 7/11/16"></div> 
+                    </td>
+                    <td style="align:right;margin:0px;">
+                        
+                                <a href="javascript:;" class="save_as_favorite { mlsnum: 1628839 }"><div class="saveFavorite"></div></a>
+                        
+							<a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1628839&timestamp=1469496823698 " class="fancybox listing-map  { address: '78 Lincoln Ave', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1628839', lat: '40.823963', lng: '-74.109530',oh: false,status:'A' }" data-fancybox-type="iframe">
+								<div class="mapsResults" >&nbsp;</div>
+							</a>
+						
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+
+         <div class="houseresults listingrecord { oh: 'false', price: '$959,000', address: '184  Fairview Ave', city: 'Rutherford',state:'NJ',zip:'07070', photourl: 'http://pxlimages.xmlsweb.com/njmls/l/images/1628781.1.jpg', detailurl: '/listings/index.cfm?action=dsp.info&amp;mlsnum=1628781&dayssince=15&amp;countysearch=false', mls_number: '1628781', beds: '5', baths_full: '4', baths_part: '1', proptype: 'Col', lat: '40.831832', lng: '-74.110610' }" style="width:600px;">
+            <input type="checkbox" class="compare_listing" id="SearchResultListID_1628781" value="1628781" />
+            <label><a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628781&dayssince=15&amp;countysearch=false" style="text-decoration:none;font-weight:normal;">    $959,000 in Rutherford</a></label>
+            <div id="details">
+                <table width="100%" style="margin-top:8px;">
+                    <tr>
+                        <td width="276" style="vertical-align:top;">
+                            <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628781&dayssince=15&amp;countysearch=false">
+								<img src="http://pxlimages.xmlsweb.com/njmls/l/images/1628781.1.jpg" alt="" width="266" class="listingimg tips" title="|View Details" onerror="$(this).attr('src', '/img/2012/no_photo_sm.png');" style="max-height:196px;" />
+							</a>
+                        </td>
+                        <td style="vertical-align:top;">
+                <strong> MLS # </strong> <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628781&dayssince=15&amp;countysearch=false" style="font-size:1.0em;">1628781</a><br />
+                    184  Fairview Ave, Rutherford, NJ 07070<br />
+                   5 Bedroom, 4 Full Bath, <br />1 Half Bath, Col 
+								<br />
+								<b>Qizhan Yao</b></strong>, Broker Owner<br />
+								<a href="/members/index.cfm?action=dsp.results_ofc&type=zip&officeid=1808"><b>Realmart Realty, LLC</b></a> 
+
+
+
+
+
+                    </td>
+                     </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td style="width:320px;padding-left:6px;">
+
+						<a href="/listings/index.cfm?action=xhr.listing_photos&mlsnum=1628781" class="fancybox listing-photos" data-fancybox-type="iframe"><div class="photos tips" title="|View Photo Gallery">6</div></a> <div class="nl tips" title="Listed on 7/11/16"></div> 
+                    </td>
+                    <td style="align:right;margin:0px;">
+                        
+                                <a href="javascript:;" class="save_as_favorite { mlsnum: 1628781 }"><div class="saveFavorite"></div></a>
+                        
+							<a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1628781&timestamp=1469496823698 " class="fancybox listing-map  { address: '184 Fairview Ave', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1628781', lat: '40.831832', lng: '-74.110610',oh: false,status:'A' }" data-fancybox-type="iframe">
+								<div class="mapsResults" >&nbsp;</div>
+							</a>
+						
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+
+         <div class="houseresults listingrecord { oh: 'false', price: '$475,000', address: '110  Mortimer Ave', city: 'Rutherford',state:'NJ',zip:'07070', photourl: 'http://pxlimages.xmlsweb.com/njmls/l/images/1628596.1.jpg', detailurl: '/listings/index.cfm?action=dsp.info&amp;mlsnum=1628596&dayssince=15&amp;countysearch=false', mls_number: '1628596', beds: '3', baths_full: '1', baths_part: '1', proptype: 'Col', lat: '40.831497', lng: '-74.106840' }" style="width:600px;">
+            <input type="checkbox" class="compare_listing" id="SearchResultListID_1628596" value="1628596" />
+            <label><a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628596&dayssince=15&amp;countysearch=false" style="text-decoration:none;font-weight:normal;">    $475,000 in Rutherford</a></label>
+            <div id="details">
+                <table width="100%" style="margin-top:8px;">
+                    <tr>
+                        <td width="276" style="vertical-align:top;">
+                            <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628596&dayssince=15&amp;countysearch=false">
+								<img src="http://pxlimages.xmlsweb.com/njmls/l/images/1628596.1.jpg" alt="" width="266" class="listingimg tips" title="|View Details" onerror="$(this).attr('src', '/img/2012/no_photo_sm.png');" style="max-height:196px;" />
+							</a>
+                        </td>
+                        <td style="vertical-align:top;">
+                <strong> MLS # </strong> <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628596&dayssince=15&amp;countysearch=false" style="font-size:1.0em;">1628596</a><br />
+                    110  Mortimer Ave, Rutherford, NJ 07070<br />
+                   3 Bedroom, 1 Full Bath, <br />1 Half Bath, Col 
+								<br />
+								<b>Thomas Steimle</b></strong>, Sales Associate<br />
+								<a href="/members/index.cfm?action=dsp.results_ofc&type=zip&officeid=930"><b>A.W. Van Winkle & Company</b></a> 
+
+
+
+
+
+                    </td>
+                     </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td style="width:320px;padding-left:6px;">
+
+						<a href="/listings/index.cfm?action=xhr.listing_photos&mlsnum=1628596" class="fancybox listing-photos" data-fancybox-type="iframe"><div class="photos tips" title="|View Photo Gallery">15</div></a> 
+                    </td>
+                    <td style="align:right;margin:0px;">
+                        
+                                <a href="javascript:;" class="save_as_favorite { mlsnum: 1628596 }"><div class="saveFavorite"></div></a>
+                        
+							<a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1628596&timestamp=1469496823698 " class="fancybox listing-map  { address: '110 Mortimer Ave', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1628596', lat: '40.831497', lng: '-74.106840',oh: false,status:'A' }" data-fancybox-type="iframe">
+								<div class="mapsResults" >&nbsp;</div>
+							</a>
+						
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+
+         <div class="houseresults listingrecord { oh: 'false', price: '$699,900', address: '69  Beckwith Pl', city: 'Rutherford',state:'NJ',zip:'07070', photourl: 'http://pxlimages.xmlsweb.com/njmls/l/images/1628582.1.jpg', detailurl: '/listings/index.cfm?action=dsp.info&amp;mlsnum=1628582&dayssince=15&amp;countysearch=false', mls_number: '1628582', beds: '3', baths_full: '3', baths_part: '1', proptype: 'Contp', lat: '40.834781', lng: '-74.106710' }" style="width:600px;">
+            <input type="checkbox" class="compare_listing" id="SearchResultListID_1628582" value="1628582" />
+            <label><a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628582&dayssince=15&amp;countysearch=false" style="text-decoration:none;font-weight:normal;">    $699,900 in Rutherford</a></label>
+            <div id="details">
+                <table width="100%" style="margin-top:8px;">
+                    <tr>
+                        <td width="276" style="vertical-align:top;">
+                            <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628582&dayssince=15&amp;countysearch=false">
+								<img src="http://pxlimages.xmlsweb.com/njmls/l/images/1628582.1.jpg" alt="" width="266" class="listingimg tips" title="|View Details" onerror="$(this).attr('src', '/img/2012/no_photo_sm.png');" style="max-height:196px;" />
+							</a>
+                        </td>
+                        <td style="vertical-align:top;">
+                <strong> MLS # </strong> <a href="/listings/index.cfm?action=dsp.info&amp;mlsnum=1628582&dayssince=15&amp;countysearch=false" style="font-size:1.0em;">1628582</a><br />
+                    69  Beckwith Pl, Rutherford, NJ 07070<br />
+                   3 Bedroom, 3 Full Bath, <br />1 Half Bath, Contp 
+								<br />
+								<b>Thomas Steimle</b></strong>, Sales Associate<br />
+								<b>Antonio Rinaldi</b>, Sales Associate<br /> <a href="/members/index.cfm?action=dsp.results_ofc&type=zip&officeid=930"><b>A.W. Van Winkle & Company</b></a> 
+
+
+
+
+
+                    </td>
+                     </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td style="width:320px;padding-left:6px;">
+
+						<a href="/listings/index.cfm?action=xhr.listing_photos&mlsnum=1628582" class="fancybox listing-photos" data-fancybox-type="iframe"><div class="photos tips" title="|View Photo Gallery">23</div></a> 
+                    </td>
+                    <td style="align:right;margin:0px;">
+                        
+                                <a href="javascript:;" class="save_as_favorite { mlsnum: 1628582 }"><div class="saveFavorite"></div></a>
+                        
+							<a href="/listings/index.cfm?action=xhr.map_get_directions&mlsnum=1628582&timestamp=1469496823698 " class="fancybox listing-map  { address: '69 Beckwith Pl', city: 'Rutherford', state:'NJ',zip:'07070',mls_number: '1628582', lat: '40.834781', lng: '-74.106710',oh: false,status:'A' }" data-fancybox-type="iframe">
+								<div class="mapsResults" >&nbsp;</div>
+							</a>
+						
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div> 
+<div class="clr"></div>
+<div class="results-footer">
+    <div id="saves2">
+        <ol>
+            <li id="compare2"><a href="/listings/index.cfm?action=xhr.compare" class="fancybox navigator_compare_save" data-fancybox-type="iframe"><img src="/img/2012/compare2.png" width="213" height="44" alt="Compare Listings" /></a></li>
+
+            <li id="save2"><a href="/listings/views/xhr.fb-save-search.cfm" class="save_this_search1 fancybox.ajax"><img src="/img/2012/savesearch.png" width="115" height="25" alt="Save Search" /></a></li>
+
+            <li id="newsave2"><a href="/listings/index.cfm?action=dsp.search"><img src="/img/2012/newsearch.png" width="120" height="25" alt="Search" /></a></li>
+        </ol>
+    </div>
+    <div class="clr"></div>
+    <div id="space"></div>
+    <div class="content2">
+	   <div class="sortDisplayWrap">
+       
+		   <div class="sortWrap" >
+             <select id="sortBySelect" class="sortBySelect">
+				<option value="newest">Sort Options</option>
+				<option value="newest">Sort Options</option>
+				<option value="newest" selected="selected">Most Recent</option>
+				
+					<option value="pchg">Recent Price Change</option>
+				
+				<option value="price.asc">Price Low - High</option>
+				<option value="price.desc">Price High - Low</option>
+				<option value="city.az">City A - Z</option>
+				<option value="city.za">City Z - A</option>
+             </select>
+			</div>
+        
+		     <div class="displayWrap">
+             <select id="displaySelect" class="displaySelect">
+                 <option value="10" selected="selected">10 Per Page</option>
+                 <option value="20">20 Per Page</option>
+                 <option value="50">50 Per Page</option>
+             </select>
+			</div>
+		</div>
+        <a id="navi-next-btm" href="#" class="next"><img src="/img/2012/arrow-right.png" width="25" height="25" alt="Search" /></a>
+        <a id="navi-prev-btm" href="#" class="prev"><img src="/img/2012/arrow-left.png" width="25" height="25" alt="Search" /></a>
+     </div>
+    <div style="display:none"><input type="hidden" id="total_pages_ref" value="6" /></div>
+    <div class="clr"></div>
+    
+		<div id="pagelist2">
+                <ol class="pagenumbers">
+                    <li class="currentPage">Pages</li>
+                    <li>1</li>
+                <li><a href="#">2</a></li> <li><a href="#">3</a></li> <li><a href="#">4</a></li> <li><a href="#">5</a></li> <li><a href="#">6</a></li> 
+                    <li class="currentPage">of 6</li>
+                </ol>
+        </div>
+	
+</div>
+
+
+<script>
+function getCookie(c_name){
+	var c_value = document.cookie;
+	var c_start = c_value.indexOf(" " + c_name + "=");
+	if (c_start == -1) {
+		c_start = c_value.indexOf(c_name + "=");
+	}
+	if (c_start == -1) {
+		c_value = null;
+	}
+	else {
+		c_start = c_value.indexOf("=", c_start) + 1;
+		var c_end = c_value.indexOf(";", c_start);
+		if (c_end == -1) {
+			c_end = c_value.length;
+		}
+		c_value = unescape(c_value.substring(c_start,c_end));
+	}
+	return c_value;
+}
+
+function setCookie(c_name,value,exdays) {
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+	document.cookie=c_name + "=" + c_value;
+}
+
+function get_val() {
+	var val_sel=document.getElementById('sortBySelectTop').value;
+	setCookie("sor_ol",val_sel,365);
+	var sort_sl=getCookie("sor_ol");
+}
+$(document).ready(function(){
+	$(".save_this_search1").fancybox({
+		maxWidth: 400,
+		maxHeight: 250,
+		fitToView: false,
+		width: '70%',
+		height: '70%',
+		autoSize: false,
+		closeClick: false,
+		openEffect: 'none',
+		closeEffect: 'none'
+	});
+
+	/*jQuery('#maptab').qtip({
+	    content: {
+	        text: 'New map features',
+	        button: true
+	    },
+	    style: {
+        classes: 'qtip-shadow qtip-rounded',
+        width: 125, // Overrides width set by CSS (but no max-width!)
+        height: 30
+
+   },
+    position: {
+        my: 'bottom left',
+        at: 'top right',
+        adjust: {
+            y: 10,
+            x: 6
+        }
+
+    },
+	    show: {
+	        ready: true
+	    },
+
+	    hide: {
+	        event: false
+	    }
+
+	});*/
+
+});
+</script>

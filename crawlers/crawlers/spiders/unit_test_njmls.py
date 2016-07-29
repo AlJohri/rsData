@@ -1,16 +1,29 @@
 import unittest
 import os
 from njmls import Njmls
+from scrapy.http import HtmlResponse
 
 class TestNjmls(unittest.TestCase):
     
     def setUp(self):
         self.mls = Njmls()
     
+    def test_get_total_pages(self):
+        curdir = os.path.dirname( os.path.realpath( __file__ ) )
+        file_name = 'unit_test_files/multi-page.html' 
+        body = open( os.path.join(curdir, file_name ) ).read()
+
+        response = HtmlResponse( url = 'test.com', body = body )
+
+        self.assertEqual( 6, self.mls.get_total_pages( response ) )
+
+
+
     def test_parse_detail_page(self):
         curdir = os.path.dirname( os.path.realpath( __file__ ) )
         file_name = 'unit_test_files/njmls_detail_page_1608743.html' 
         body = open( os.path.join(curdir, file_name ) ).read()
+
         
         houseData, mlsHist, image_links = self.mls.extract_detail_page( body )
 

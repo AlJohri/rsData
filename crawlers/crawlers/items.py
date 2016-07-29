@@ -20,10 +20,11 @@ class MlsHistoryItem(scrapy.Item):
     status = scrapy.Field()
 
     def update_data_base(self):
+        from datetime import datetime
         try:        
             mlshistory = Mlshistory.create( 
                             mls= self['mls'],
-                            date = self['date'],
+                            date = datetime.strptime( self['date'], '%m/%d/%Y').date(),
                             price = self.get('price', None ),
                             status = self.get('status', None ),
                             ) 
@@ -53,60 +54,47 @@ class HouseItem(scrapy.Item):
 
     def update_data_base(self):
 
-        try:
-            house = House.create( 
-                          address = self['address'],
-                          state = self['state'],
-                          town = self['town'],
-                          zipcode = self['zipcode'],
-                        )
-        except peewee.IntegrityError as e:
-            pass
-        finally:
-            house = House.get( 
-                          address = self['address'],
-                          state = self['state'],
-                          town = self['town']
-                          )
-        try:         
-            mls = Mlsinfo.create(  mls = self['mls'] )
-        except peewee.IntegrityError as e:
-            pass
-        finally: 
-            mls = Mlsinfo.get( mls = self['mls'] )
+        house = House.get_or_create( 
+                      address = self['address'],
+                      state = self['state'],
+                      town = self['town'],
+                      defaults = { 'zipcode': self['zipcode']  }
+                      )
+
+        mls = Mlsinfo.get_or_create(  mls = self['mls'] )
             
-            for attr in ( 
-                        'style', 
-                        'rooms', 
-                        'bedrooms', 
-                        'bathrooms',
-                        'basement', 
-                        'garage', 
-                        'heatcool',
-                        'utility',
-                        'yearbuilt',
-                        'tax', 
-                        ):
-                if mls.__getattribute__(attr) == None and self.get(attr, None) != None:
-                    # only update empty field    
-                    mls.__setattr__(attr, self.get(attr) )
+        for attr in ( 
+                    'style', 
+                    'rooms', 
+                    'bedrooms', 
+                    'bathrooms',
+                    'basement', 
+                    'garage', 
+                    'heatcool',
+                    'utility',
+                    'yearbuilt',
+                    'tax', 
+                    ):
+            if mls.__getattribute__(attr) == None and self.get(attr, None) != None:
+                # only update empty field    
+                mls.__setattr__(attr, self.get(attr) )
 
-            mls.save()
-
+        mls.save()
+        
         try:
-            housemls = Housemls.create(houseid = house, 
-                                mls = mls 
-                               )
-        except peewee.IntegrityError  as e:
+            Housemls.create_or_get(houseid = house, 
+                                   mls = mls 
+                                   )
+        except peewee.IntegrityError as e:
             pass
-
 
         for link in self.get( 'images', [] ):
             try:
-                MlsImage.create( mls = mls,
-                                 url = link,
-                                 image = urllib.urlopen( link ).read() 
-                                )
+                mi = MlsImage.create( mls = mls,
+                                      url = link,
+                                    )
+                mi.image =  urllib.urlopen( link ).read() 
+                mi.save()
             except peewee.IntegrityError  as e:
                 pass
 
@@ -118,9 +106,9 @@ class HouseItem(scrapy.Item):
             
             
             try:
-                housemls = Housemls.create(houseid = house, 
-                                    mls = mh['mls']
-                                   )
+                Housemls.create(houseid = house, 
+                                mls = mh['mls']
+                                )
             except peewee.IntegrityError  as e:
                 pass
 

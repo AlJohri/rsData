@@ -76,7 +76,7 @@ class Mlshistory(BaseModel):
     '''
     a single mls can have multiple list status
     '''
-    date = DateField(null=True)
+    date = DateField()
     mls = ForeignKeyField(rel_model=Mlsinfo, to_field='mls')
     price = IntegerField(null=True)
     status = TextField(null=True)

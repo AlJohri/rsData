@@ -9,6 +9,20 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
+# set logger
+import logging
+from logging.handlers import RotatingFileHandler
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+fh = RotatingFileHandler('debug.log', maxBytes=5000000, backupCount=3)
+fh.setLevel( logging.DEBUG)
+fh.setFormatter( formatter )
+logger.addHandler(fh)
+
 
 BOT_NAME = 'crawlers'
 
