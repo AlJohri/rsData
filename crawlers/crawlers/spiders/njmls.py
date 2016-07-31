@@ -171,65 +171,67 @@ class Njmls(scrapy.Spider):
         houseRlt={}
         soup = bs(html)
         listSection= soup.find('div', {'id': 'listsection'})
-        contents = listSection.findAll('strong')
-        
-        locale.setlocale(locale.LC_ALL, "")
+        if listSection:
+            contents = listSection.findAll('strong')
+            
+            locale.setlocale(locale.LC_ALL, "")
 
-        for content in contents:
-            key= content.string.strip()
-            value= normalize_text( content.nextSibling )
-
-
-            if re.search(r'^Address', key):
-                houseRlt['address'] = value
-        
-            elif re.search(r'^Style', key):
-                houseRlt['style'] = value
-
-            elif re.search(r'^Rooms', key):
-                houseRlt['rooms'] = float(value)
-
-            elif re.search(r'^Bedrooms', key):
-                houseRlt['bedrooms'] = float(value)
-
-            elif re.search(r'^Full Baths', key):
-                houseRlt['bathrooms'] = houseRlt.get('bathrooms', 0) + float(value)
-
-            elif re.search(r'^Half Baths', key):
-                houseRlt['bathrooms'] = houseRlt.get('bathrooms', 0) + float(value)*0.5
-
-            elif re.search(r'^Basement', key):
-                houseRlt['basement'] = value
-
-            elif re.search(r'^Garage', key):
-                houseRlt['garage'] = value
+            for content in contents:
+                key= content.string.strip()
+                value= normalize_text( content.nextSibling )
 
 
-            elif re.search(r'^Taxes', key):
-                houseRlt['tax'] = locale.atof(value.replace('$',''))
+                if re.search(r'^Address', key):
+                    houseRlt['address'] = value
+            
+                elif re.search(r'^Style', key):
+                    houseRlt['style'] = value
 
-            else:
-                pass
+                elif re.search(r'^Rooms', key):
+                    houseRlt['rooms'] = float(value)
+
+                elif re.search(r'^Bedrooms', key):
+                    houseRlt['bedrooms'] = float(value)
+
+                elif re.search(r'^Full Baths', key):
+                    houseRlt['bathrooms'] = houseRlt.get('bathrooms', 0) + float(value)
+
+                elif re.search(r'^Half Baths', key):
+                    houseRlt['bathrooms'] = houseRlt.get('bathrooms', 0) + float(value)*0.5
+
+                elif re.search(r'^Basement', key):
+                    houseRlt['basement'] = value
+
+                elif re.search(r'^Garage', key):
+                    houseRlt['garage'] = value
+
+
+                elif re.search(r'^Taxes', key):
+                    houseRlt['tax'] = locale.atof(value.replace('$',''))
+
+                else:
+                    pass
         
 
         features= soup.find('div', {'id':'listingfeatures'})
-        features = features.findAll('strong')
-        for f in features:
-            key= f.string.strip()
-            value = normalize_text ( f.nextSibling.nextSibling )
+        if features:
+            features = features.findAll('strong')
+            for f in features:
+                key= f.string.strip()
+                value = normalize_text ( f.nextSibling.nextSibling )
 
-            if re.search(r'^Heat', key):
-                houseRlt['heatcool'] = value
+                if re.search(r'^Heat', key):
+                    houseRlt['heatcool'] = value
 
-            elif re.search(r'^Year', key):
-                p = re.search(r'(\d+)', value)
-                if p:
-                    houseRlt['yearbuilt']= int(p.group(0))
+                elif re.search(r'^Year', key):
+                    p = re.search(r'(\d+)', value)
+                    if p:
+                        houseRlt['yearbuilt']= int(p.group(0))
 
-            elif re.search(r'^Utilities', key):
-                houseRlt['utility'] = value
-            else:
-                pass
+                elif re.search(r'^Utilities', key):
+                    houseRlt['utility'] = value
+                else:
+                    pass
 
         # find images 
         image_links = [ i.get('data-rsbigimg').replace('/h/', '/m/') for i in soup.findAll('a', {'class': 'rsImg'}) ]
@@ -238,23 +240,25 @@ class Njmls(scrapy.Spider):
         mls_history = []
         mls_prev = ''
         data = soup.find('div', {'class': "nj-grid-body nj-history-body" } )
-        for row in data.findAll('div', {'class': 'nj-row' }):
-            mls = row.find('div', {'class': 'mls-num' } ).text.strip()
-            if mls == '':
-                mls = mls_prev
-            date = row.find('div', {'class': 'mls-date' } ).text.strip()
-            price = row.find('div', {'class': 'mls-price' } ).text.strip()
-            price = locale.atof(price.replace('$',''))
-            status =  normalize_text ( row.find('div', {'class': 'mls-status' } ).text )
-            mls_history.append({
-            'mls': mls,
-            'date': date,
-            'price': price,
-            'status': status
-            })
+
+        if data:
+            for row in data.findAll('div', {'class': 'nj-row' }):
+                mls = row.find('div', {'class': 'mls-num' } ).text.strip()
+                if mls == '':
+                    mls = mls_prev
+                date = row.find('div', {'class': 'mls-date' } ).text.strip()
+                price = row.find('div', {'class': 'mls-price' } ).text.strip()
+                price = locale.atof(price.replace('$',''))
+                status =  normalize_text ( row.find('div', {'class': 'mls-status' } ).text )
+                mls_history.append({
+                'mls': mls,
+                'date': date,
+                'price': price,
+                'status': status
+                })
 
 
-            mls_prev = mls
+                mls_prev = mls
 
 
         return (houseRlt, mls_history, image_links )
