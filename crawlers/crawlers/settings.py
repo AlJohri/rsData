@@ -18,9 +18,10 @@ logger.setLevel(logging.DEBUG)
 
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-fh = RotatingFileHandler('debug.log', maxBytes=5000000, backupCount=3)
+fh = RotatingFileHandler('debug.log', backupCount=30)
 fh.setLevel( logging.DEBUG)
 fh.setFormatter( formatter )
+fh.doRollover()
 logger.addHandler(fh)
 
 

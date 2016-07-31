@@ -56,7 +56,7 @@ class MlsImage(BaseModel):
     
     mls = ForeignKeyField(rel_model=Mlsinfo, to_field='mls', related_name='images' )
     url = CharField(unique=True)
-    image = BlobField()
+    image = BlobField(null=True)
 
 
 class Housemls(BaseModel):

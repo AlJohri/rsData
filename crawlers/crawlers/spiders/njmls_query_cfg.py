@@ -2,11 +2,10 @@
 # search cities
 Cities=\
 '''
-rutherford   07070
+#rutherford      07070
+#carlstadt       07072
+wallington      07075
 '''
-#'''
-#carlstadt   07072
-#'''
 
 # property types
 single_family='1'
@@ -21,8 +20,8 @@ land='8'
 
 Proptyes=[
 #condo, 
-#twofour_family,
-single_family,
+twofour_family,
+#single_family,
 #rental,
 ]
 

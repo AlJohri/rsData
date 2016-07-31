@@ -63,12 +63,16 @@ class Njmls(scrapy.Spider):
 
     def start_requests(self):
         for line in qc.Cities.strip().split('\n'):
+            if line.find('#') == 0:
+                continue
+
             for proptype in qc.Proptyes:
                 for stat in qc.Statuses:
                     city, zipcode = line.split()
                     city = city.lower()
+                    page = 1
 
-                    query = self.gen_query( city, zipcode, proptype, stat, 1 ) 
+                    query = self.gen_query( city, zipcode, proptype, stat, page ) 
 
                     url = Request('GET', Njmls.URL_LISTINGS, params = query, headers = Njmls.headers ).prepare().url
 
@@ -78,6 +82,7 @@ class Njmls(scrapy.Spider):
                     'zipcode': zipcode,
                     'proptype': proptype,
                     'stat': stat,
+                    'page': page,
                     }
                     yield request
 
@@ -89,10 +94,11 @@ class Njmls(scrapy.Spider):
         return int(n)
 
     def parse(self, response):
-            
+
         pages = self.get_total_pages( response )
         self.logger.info('crawl params %s' % response.meta['search_params'] )
         self.logger.info('total page %s' % pages )
+
         
         for page in range(1, pages+1 ):
             search_params = response.meta['search_params'].copy()
@@ -106,14 +112,15 @@ class Njmls(scrapy.Spider):
 
             url = Request('GET', Njmls.URL_LISTINGS, params = query, headers = Njmls.headers ).prepare().url
 
-            request =  scrapy.Request( url, callback = self.parse_listing ) 
+            request =  scrapy.Request( url, callback = self.parse_listing, dont_filter=True ) 
             request.meta['data'] = houseData
+            request.meta['search_params'] = search_params
             yield request
         
-        
+
     def parse_listing(self, response ):
         
-        self.logger.info('crawl %s' % response.meta['search_params'])
+        self.logger.info('parse listting: %s' % response.meta['search_params'])
 
         mlses = response.xpath('//div[@class]').re('houseresults listingrecord.*mls_number: \'(\d+)')
 
@@ -215,7 +222,9 @@ class Njmls(scrapy.Spider):
                 houseRlt['heatcool'] = value
 
             elif re.search(r'^Year', key):
-                houseRlt['yearbuilt']= int(re.search(r'(\d+)', value).group(0))
+                p = re.search(r'(\d+)', value)
+                if p:
+                    houseRlt['yearbuilt']= int(p.group(0))
 
             elif re.search(r'^Utilities', key):
                 houseRlt['utility'] = value

@@ -43,8 +43,9 @@ class TestDBModels(unittest.TestCase):
 
         self.assertEqual(None, mlsinfo.attic )
 
-        mlsinfo.attic = 'old' 
-        mlsinfo.save()
+        mlsinfo.update( attic = 'old'  ).execute()
+
+        print mlsinfo.__getattribute__('style') == None
         
         instance = Mlsinfo.get( mls = mls )
         self.assertEqual('old', instance.attic )
