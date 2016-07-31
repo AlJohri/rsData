@@ -43,10 +43,31 @@ class TestDBModels(unittest.TestCase):
 
         self.assertEqual(None, mlsinfo.attic )
 
-        mlsinfo.attic = 'old' 
-        mlsinfo.save()
+        mlsinfo.update( attic = 'old'  ).execute()
+
+        print mlsinfo.__getattribute__('style') == None
         
         instance = Mlsinfo.get( mls = mls )
         self.assertEqual('old', instance.attic )
+    
+    def test_mls_history(self):
+        from datetime  import date
+        from datetime  import datetime
+        
+        mls1 = '12345'
+        date1 = datetime.strptime( '12/31/14' ,  '%m/%d/%y' ).date()
+        
+        mls2 = '12346'
+        date2 = datetime.strptime( '11/30/99', '%m/%d/%y' ).date()
 
+        mls3 = '12347'
+        date3 = datetime.strptime( '11/30/01', '%m/%d/%y' ).date()
+
+
+        Mlshistory.create( mls = mls1, date = date1)
+        Mlshistory.create( mls = mls2, date = date2)
+        Mlshistory.create( mls = mls3, date = date3)
+
+        d =  Mlshistory.get( Mlshistory.date > date(2012,1,1 ) )
+        self.assertEqual( mls1, d.mls_id )
 

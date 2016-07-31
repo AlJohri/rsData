@@ -1,16 +1,78 @@
 import unittest
 import os
 from njmls import Njmls
+from scrapy.http import HtmlResponse
 
 class TestNjmls(unittest.TestCase):
     
     def setUp(self):
         self.mls = Njmls()
     
+    def test_get_total_pages(self):
+        curdir = os.path.dirname( os.path.realpath( __file__ ) )
+        file_name = 'unit_test_files/multi-page.html' 
+        body = open( os.path.join(curdir, file_name ) ).read()
+
+        response = HtmlResponse( url = 'test.com', body = body )
+
+        self.assertEqual( 6, self.mls.get_total_pages( response ) )
+
+
+    def test_list_sold(self):
+        curdir = os.path.dirname( os.path.realpath( __file__ ) )
+        file_name = 'unit_test_files/njmls_sold.html' 
+        body = open( os.path.join(curdir, file_name ) ).read()
+
+        houseData, mlsHist, image_links = self.mls.extract_detail_page( body )
+        expect_house= {
+        'style': u'2fam', 
+        'bathrooms': 3.0, 
+        'bedrooms': 5.0, 
+        'tax': 9335.0, 
+        'garage': u'carport,detached,1 car', 
+        'rooms': 8.0, 
+        'basement': u'full,unfinished', 
+        'address': u'16 jordan ave',
+        }
+        
+        self.assertEqual( expect_house, houseData)
+        
+        expect_mlshist= [
+        {'date': u'07/26/16', 'mls': u'1611634', 'price': 447000.0, 'status': u'sold'}, 
+        {'date': u'05/03/16', 'mls': u'1611634', 'price': 459000.0, 'status': u'under contract'}, 
+        {'date': u'03/25/16', 'mls': u'1611634', 'price': 459000.0, 'status': u'listed'}
+        ]
+        self.assertEqual( expect_mlshist, mlsHist )
+
+        for i in range(1, 16):
+            self.assertEqual( 'http://pxlimages.xmlsweb.com/njmls/m/images/1611634.%d.jpg' % i, image_links[i-1] )
+
+    def test_under_contract(self):
+        curdir = os.path.dirname( os.path.realpath( __file__ ) )
+        file_name = 'unit_test_files/njmls_under_contract.html' 
+        body = open( os.path.join(curdir, file_name ) ).read()
+
+        houseData, mlsHist, image_links = self.mls.extract_detail_page( body )
+
+        expect_house={'style': u'2fam', 'bathrooms': 3.0, 'bedrooms': 7.0, 'tax': 8449.0, 'garage': u'3+car,park space', 'rooms': 14.0, 'basement': u'finished,full', 'address': u'23 park row'}
+
+        self.assertEqual( expect_house, houseData )
+
+        expect_mlshist=[
+        {'date': u'07/21/16', 'mls': u'1603261', 'price': 469900.0, 'status': u'under contract'}, 
+        {'date': u'06/01/16', 'mls': u'1603261', 'price': 469900.0, 'status': u'price change'}, 
+        {'date': u'05/09/16', 'mls': u'1603261', 'price': 474900.0, 'status': u'price change'}, 
+        {'date': u'04/11/16', 'mls': u'1603261', 'price': 485900.0, 'status': u'price change'}, 
+        {'date': u'01/29/16', 'mls': u'1603261', 'price': 495900.0, 'status': u'listed'}
+        ]
+
+        self.assertEqual( expect_mlshist, mlsHist )
+
     def test_parse_detail_page(self):
         curdir = os.path.dirname( os.path.realpath( __file__ ) )
         file_name = 'unit_test_files/njmls_detail_page_1608743.html' 
         body = open( os.path.join(curdir, file_name ) ).read()
+
         
         houseData, mlsHist, image_links = self.mls.extract_detail_page( body )
 
