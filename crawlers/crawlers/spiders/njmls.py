@@ -3,7 +3,7 @@ from requests import Request
 from bs4 import BeautifulSoup as bs
 import locale
 import re
-import  njmls_query_cfg as qc
+import  njmls_cfg as qc
 from crawlers.items import HouseItem, MlsHistoryItem
 from scrapy.exceptions import CloseSpider
 
