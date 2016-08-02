@@ -12,7 +12,6 @@ class House(BaseModel):
     '''
     house id to house location map
     '''
-    houseid = PrimaryKeyField()
     address = FixedCharField()
     state = FixedCharField()
     town = FixedCharField()
@@ -23,6 +22,10 @@ class House(BaseModel):
             (('address', 'town', 'state'), True),
         )
 
+class Agent(BaseModel):
+    name = FixedCharField( unique = True )
+    tel = FixedCharField( null =True )
+
 class Mlsinfo(BaseModel):
     '''
     snapshot of all information for the mls.
@@ -32,6 +35,7 @@ class Mlsinfo(BaseModel):
     All relavent infomation are stored and should be enough to decide whether it is a good investment. 
     '''
     mls = FixedCharField( primary_key = True ) 
+    type = FixedCharField() # sell or rent
     attic = TextField(null=True)
     basement = TextField(null=True)
     bathrooms = FloatField(null=True)
@@ -50,11 +54,14 @@ class Mlsinfo(BaseModel):
     tax = IntegerField(null=True)
     utility = TextField(null=True)
     yearbuilt = IntegerField(null=True)
+    pets  = TextField( null = True ) # for rental
+    provided = TextField( null = True ) # for rental 
+    listagent = ForeignKeyField( null = True, rel_model= Agent , related_name = 'mlses') # only show the listing agent when it is sold
 
 
 class MlsImage(BaseModel):
     
-    mls = ForeignKeyField(rel_model=Mlsinfo, to_field='mls', related_name='images' )
+    mls = ForeignKeyField(rel_model=Mlsinfo, related_name='images' )
     url = CharField(unique=True)
     image = BlobField(null=True)
 
@@ -63,12 +70,12 @@ class Housemls(BaseModel):
     '''
     a house can be listed by multiple mlses
     '''
-    houseid = ForeignKeyField(rel_model=House, to_field='houseid')
-    mls = ForeignKeyField(rel_model=Mlsinfo, to_field='mls')
+    house = ForeignKeyField(rel_model=House, related_name = 'mlses' )
+    mls = ForeignKeyField(rel_model=Mlsinfo, related_name = 'house' )
 
     class Meta:
         indexes = (
-            (('houseid', 'mls'), True),
+            (('house', 'mls'), True),
         )
 
 
@@ -77,7 +84,7 @@ class Mlshistory(BaseModel):
     a single mls can have multiple list status
     '''
     date = DateField()
-    mls = ForeignKeyField(rel_model=Mlsinfo, to_field='mls')
+    mls = ForeignKeyField(rel_model=Mlsinfo, related_name = 'histories' )
     price = IntegerField(null=True)
     status = TextField(null=True)
 

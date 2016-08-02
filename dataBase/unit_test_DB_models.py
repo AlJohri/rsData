@@ -1,7 +1,7 @@
 import unittest
 import peewee
 import DB_models
-from  DB_models import database, House, Mlsinfo, Housemls, Mlshistory
+from  DB_models import database, House, Agent, Mlsinfo, Housemls, Mlshistory
 from DB_models import IntegrityError
 import sqlite3 as sql
 import os
@@ -11,7 +11,7 @@ class TestDBModels(unittest.TestCase):
     def setUp(self):
         self.dbname = './unit_test_files/temp.db'
         database.init( self.dbname )  
-        database.create_tables([House, Mlsinfo, Housemls, Mlshistory])
+        database.create_tables([House, Agent, Mlsinfo, Housemls, Mlshistory])
 
 
     def tearDown(self):
@@ -39,13 +39,13 @@ class TestDBModels(unittest.TestCase):
     def test_mls_update(self):
         
         mls = '1630289'
-        mlsinfo = Mlsinfo.create( mls = mls)
+        mlsinfo = Mlsinfo.create( mls = mls, type='sell')
 
         self.assertEqual(None, mlsinfo.attic )
 
         mlsinfo.update( attic = 'old'  ).execute()
 
-        print mlsinfo.__getattribute__('style') == None
+        self.assertEqual( mlsinfo.__getattribute__('style'), None )
         
         instance = Mlsinfo.get( mls = mls )
         self.assertEqual('old', instance.attic )
