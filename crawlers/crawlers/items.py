@@ -41,6 +41,7 @@ class AgentItem(scrapy.Item):
 
 class HouseItem(scrapy.Item):
     mls  = scrapy.Field()
+    type = scrapy.Field()
     address = scrapy.Field()
     town = scrapy.Field()
     state = scrapy.Field()
@@ -75,6 +76,7 @@ class HouseItem(scrapy.Item):
         mls, _created = Mlsinfo.get_or_create(  mls = self['mls'] )
         
         for attr in ( 
+                    'type',
                     'style', 
                     'rooms', 
                     'bedrooms', 
