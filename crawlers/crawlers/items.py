@@ -6,7 +6,7 @@
 # http://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from DB_models import House, Mlsinfo, Housemls, Mlshistory, MlsImage
+from DB_models import House, Mlsinfo, Housemls, Mlshistory, MlsImage, Agent
 import logging
 import peewee
 import urllib
@@ -34,6 +34,11 @@ class MlsHistoryItem(scrapy.Item):
             pass 
 
 
+class AgentItem(scrapy.Item):
+    name = scrapy.Field()
+    tel = scrapy.Field()
+
+
 class HouseItem(scrapy.Item):
     mls  = scrapy.Field()
     address = scrapy.Field()
@@ -52,6 +57,7 @@ class HouseItem(scrapy.Item):
     tax = scrapy.Field()
     images = scrapy.Field()
     mlshistories = scrapy.Field()
+    listagent = scrapy.Field()
 
     def update_data_base(self):
         

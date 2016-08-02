@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup as bs
 import locale
 import re
 import  njmls_cfg as qc
-from crawlers.items import HouseItem, MlsHistoryItem
+from crawlers.items import HouseItem, MlsHistoryItem, AgentItem
 from scrapy.exceptions import CloseSpider
 
 def normalize_text( text ):
@@ -110,6 +110,11 @@ class Njmls(scrapy.Spider):
             houseData['state'] = 'nj'
             houseData['zipcode'] = search_params['zipcode']
 
+            if search_params['proptype'] == qc.rental:
+                houseData['type'] = 'rent'
+            else:
+                houseData['type'] = 'sell'
+
             url = Request('GET', Njmls.URL_LISTINGS, params = query, headers = Njmls.headers ).prepare().url
 
             request =  scrapy.Request( url, callback = self.parse_listing, dont_filter=True ) 
@@ -137,6 +142,7 @@ class Njmls(scrapy.Spider):
             url = Request('GET', Njmls.URL_LISTINGS, params = query, headers = Njmls.headers ).prepare().url
             request = scrapy.Request( url, callback =  self.parse_njmls_site )
             request.meta['data'] = houseData
+            request.meta['search_params'] = response.meta['search_params']
             yield request
 
             
@@ -148,8 +154,9 @@ class Njmls(scrapy.Spider):
         self.logger.info('crawl %s' % response.url )
 
         houseData = response.meta['data'].copy()
+        isSold = response.meta['search_params'].stat == qc.sold
         
-        houseRlt, mls_histories, image_links = self.extract_detail_page(response.body )
+        houseRlt, mls_histories, image_links = self.extract_detail_page(response.body, isSold )
         houseData.update( houseRlt )
 
         houseData['images'] = image_links
@@ -166,7 +173,11 @@ class Njmls(scrapy.Spider):
 
 
         
-    def extract_detail_page(self, html):
+    def extract_detail_page(self, html, isSold):
+        '''
+        extract information for sell or rent
+        isSold true, extract listing agent
+        '''
         
         houseRlt={}
         soup = bs(html)
@@ -230,8 +241,35 @@ class Njmls(scrapy.Spider):
 
                 elif re.search(r'^Utilities', key):
                     houseRlt['utility'] = value
+
+                elif re.search(r'^Provided', key):
+                    houseRlt['provided'] = value
+
+                elif re.search(r'^Pets',key):
+                    houseRlt['pets'] = value
+                    
                 else:
                     pass
+        
+        # find listing agent if sold
+        if isSold:
+            agents = soup.find('div', {'class': 'nj-listing-agents' })
+            if agents:
+                agents = agents.findAll('strong') 
+                for agent in agents:
+                    key= agent.string.strip()
+                    value = normalize_text ( agent.nextSibling )
+
+                    if re.search(r'^Listing Agent', key):
+                        tmp = {} 
+                        try:
+                            tmp['name'] = normalize_text( value.split(',')[0] )
+                            tmp['tel']  = normalize_text( value.split(',')[1] )
+                        except Exception:
+                            pass
+                
+                        houseRlt['listagent'] = tmp
+        
 
         # find images 
         image_links = [ i.get('data-rsbigimg').replace('/h/', '/m/') for i in soup.findAll('a', {'class': 'rsImg'}) ]

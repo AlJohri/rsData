@@ -23,18 +23,19 @@ class TestNjmls(unittest.TestCase):
         file_name = 'unit_test_files/njmls_sold.html' 
         body = open( os.path.join(curdir, file_name ) ).read()
 
-        houseData, mlsHist, image_links = self.mls.extract_detail_page( body )
+        houseData, mlsHist, image_links = self.mls.extract_detail_page( body, True )
         expect_house= {
         'style': u'2fam', 
         'bathrooms': 3.0, 
         'bedrooms': 5.0, 
         'tax': 9335.0, 
         'garage': u'carport,detached,1 car', 
+        'listagent': {'name': u'dominik chyzy', 'tel': u'(973) 980-8382'},
         'rooms': 8.0, 
         'basement': u'full,unfinished', 
         'address': u'16 jordan ave',
         }
-        
+
         self.assertEqual( expect_house, houseData)
         
         expect_mlshist= [
@@ -52,7 +53,7 @@ class TestNjmls(unittest.TestCase):
         file_name = 'unit_test_files/njmls_under_contract.html' 
         body = open( os.path.join(curdir, file_name ) ).read()
 
-        houseData, mlsHist, image_links = self.mls.extract_detail_page( body )
+        houseData, mlsHist, image_links = self.mls.extract_detail_page( body, False )
 
         expect_house={'style': u'2fam', 'bathrooms': 3.0, 'bedrooms': 7.0, 'tax': 8449.0, 'garage': u'3+car,park space', 'rooms': 14.0, 'basement': u'finished,full', 'address': u'23 park row'}
 
@@ -74,7 +75,7 @@ class TestNjmls(unittest.TestCase):
         body = open( os.path.join(curdir, file_name ) ).read()
 
         
-        houseData, mlsHist, image_links = self.mls.extract_detail_page( body )
+        houseData, mlsHist, image_links = self.mls.extract_detail_page( body, False )
 
         expected_rlt={
         'bathrooms': 2.0, 
@@ -112,4 +113,20 @@ class TestNjmls(unittest.TestCase):
 
         self.assertEqual( expected_image_links, image_links )
 
+    
+    def test_parse_rental_active(self):
 
+        curdir = os.path.dirname( os.path.realpath( __file__ ) )
+        file_name = 'unit_test_files/njmls_rental_active.html' 
+        body = open( os.path.join(curdir, file_name ) ).read()
+
+        houseData, mlsHist, image_links = self.mls.extract_detail_page( body, False )
+
+        self.assertEqual('cats prohbtd, dogs prohbtd, none', houseData['pets'] )
+        self.assertEqual('ov/rang/gs, water', houseData['provided'] )
+
+        self.assertEqual( [
+        {'date': u'07/06/16', 'mls': u'1628335', 'price': 1600.0, 'status': u'listed'}, 
+        {'date': u'07/17/12', 'mls': u'1213646', 'price': 1200.0, 'status': u'off-market'}, 
+        {'date': u'04/16/12', 'mls': u'1213646', 'price': 1200.0, 'status': u'listed'}
+        ], mlsHist )
