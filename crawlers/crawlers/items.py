@@ -7,6 +7,7 @@
 
 import scrapy
 from DB_models import House, Mlsinfo, Housemls, Mlshistory, MlsImage, Agent
+from db_helper import get_next_dummy_address
 import logging
 import peewee
 import urllib
@@ -24,7 +25,7 @@ class MlsHistoryItem(scrapy.Item):
         from datetime import datetime
         try:        
             mlshistory = Mlshistory.create( 
-                            mls= self['mls'],
+                            mls = self['mls'],
                             date = datetime.strptime( self['date'], '%m/%d/%y').date(),
                             price = self.get('price', None ),
                             status = self.get('status', None ),
@@ -62,16 +63,21 @@ class HouseItem(scrapy.Item):
 
     def update_data_base(self):
         
-        houseError= False
-        try:
+        if self.has_key('address'):
             house, _created = House.get_or_create( 
                           address = self['address'],
                           state = self['state'],
                           town = self['town'],
                           defaults = { 'zipcode': self['zipcode']  }
                           )
-        except KeyError as e:
-            houseError = True
+        else:
+            house, _created = House.get_or_create( 
+                          address = get_next_dummy_address(),
+                          state = self['state'],
+                          town = self['town'],
+                          defaults = { 'zipcode': self['zipcode']  }
+                          )
+            
 
         mls, _created = Mlsinfo.get_or_create(  mls = self['mls'] )
         
@@ -105,25 +111,22 @@ class HouseItem(scrapy.Item):
                 except Exception as e:
                     pass
         
-        if not houseError:
-            try:
-                Housemls.create(houseid = house, 
-                                       mls = mls 
-                                       )
-            except peewee.IntegrityError as e:
-                pass
+        try:
+            Housemls.create(house = house, 
+                            mls = mls 
+                           )
+        except peewee.IntegrityError as e:
+            pass
             
 
         for mh in self.get('mlshistories', [] ):
             mh.update_data_base()
             
-            
-            if not houseError:
-                try:
-                    Housemls.create(houseid = house, 
-                                    mls = mh['mls']
-                                    )
-                except peewee.IntegrityError  as e:
-                    pass
+            try:
+                Housemls.create(house = house, 
+                                mls = mh['mls']
+                                )
+            except peewee.IntegrityError  as e:
+                pass
 
 
