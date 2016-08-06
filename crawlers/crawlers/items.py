@@ -118,6 +118,15 @@ class HouseItem(scrapy.Item):
         except peewee.IntegrityError as e:
             pass
             
+        if self.has_key('listagent'):
+            data = self['listagent']
+            if data.has_key('name'):
+                agent, _created = Agent.get_or_create( name= data['name'],
+                                                 tel = data.get('tel', None ) )
+                house.listagent = agent 
+                house.save()
+            
+            
 
         for mh in self.get('mlshistories', [] ):
             mh.update_data_base()

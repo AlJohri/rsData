@@ -268,7 +268,8 @@ class Njmls(scrapy.Spider):
                         except Exception:
                             pass
                 
-                        houseRlt['listagent'] = tmp
+                        if tmp.has_key('name'):
+                            houseRlt['listagent'] = tmp
         
 
         # find images 
