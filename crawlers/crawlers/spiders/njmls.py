@@ -6,6 +6,7 @@ import re
 import  njmls_cfg as qc
 from crawlers.items import HouseItem, MlsHistoryItem, AgentItem
 from scrapy.exceptions import CloseSpider
+import pdb
 
 def normalize_text( text ):
     return ' '.join( text.strip().lower().split() )
@@ -66,25 +67,24 @@ class Njmls(scrapy.Spider):
             if line.find('#') == 0:
                 continue
 
-            for proptype in qc.Proptyes:
-                for stat in qc.Statuses:
-                    city, zipcode = line.split()
-                    city = city.lower()
-                    page = 1
+            for proptype, stat in qc.PS:
+                city, zipcode = line.split()
+                city = city.lower()
+                page = 1
 
-                    query = self.gen_query( city, zipcode, proptype, stat, page ) 
+                query = self.gen_query( city, zipcode, proptype, stat, page ) 
 
-                    url = Request('GET', Njmls.URL_LISTINGS, params = query, headers = Njmls.headers ).prepare().url
+                url = Request('GET', Njmls.URL_LISTINGS, params = query, headers = Njmls.headers ).prepare().url
 
-                    request =  scrapy.Request( url  ) 
-                    request.meta['search_params'] = {
-                    'city': city,
-                    'zipcode': zipcode,
-                    'proptype': proptype,
-                    'stat': stat,
-                    'page': page,
-                    }
-                    yield request
+                request =  scrapy.Request( url  ) 
+                request.meta['search_params'] = {
+                'city': city,
+                'zipcode': zipcode,
+                'proptype': proptype,
+                'stat': stat,
+                'page': page,
+                }
+                yield request
 
         
    
@@ -125,7 +125,8 @@ class Njmls(scrapy.Spider):
 
     def parse_listing(self, response ):
         
-        self.logger.info('parse listting: %s' % response.meta['search_params'])
+        search_params = response.meta['search_params'].copy()
+        self.logger.info('parse listing: %s' % search_params )
 
         mlses = response.xpath('//div[@class]').re('houseresults listingrecord.*mls_number: \'(\d+)')
 
@@ -142,7 +143,7 @@ class Njmls(scrapy.Spider):
             url = Request('GET', Njmls.URL_LISTINGS, params = query, headers = Njmls.headers ).prepare().url
             request = scrapy.Request( url, callback =  self.parse_njmls_site )
             request.meta['data'] = houseData
-            request.meta['search_params'] = response.meta['search_params']
+            request.meta['search_params'] = search_params
             yield request
 
             
@@ -151,15 +152,21 @@ class Njmls(scrapy.Spider):
 
     def parse_njmls_site(self, response ):
         
-        self.logger.info('crawl %s' % response.url )
+        search_params = response.meta['search_params'].copy()
+        self.logger.info('parse_njmls_site %s' % response.url )
+        self.logger.info('parse_njmls_site %s' % search_params )
 
         houseData = response.meta['data'].copy()
-        isSold = response.meta['search_params'].stat == qc.sold
+        isSold =  ( search_params['stat'] == qc.sold )
         
         houseRlt, mls_histories, image_links = self.extract_detail_page(response.body, isSold )
         houseData.update( houseRlt )
 
         houseData['images'] = image_links
+
+        data= AgentItem()
+        data.update( houseData.get('listagent', {} ) )
+        houseData['listagent'] = data
 
         houseData['mlshistories'] = []
         for history in mls_histories: 
@@ -255,22 +262,24 @@ class Njmls(scrapy.Spider):
         if isSold:
             agents = soup.find('div', {'class': 'nj-listing-agents' })
             if agents:
-                agents = agents.findAll('strong') 
-                for agent in agents:
-                    key= agent.string.strip()
-                    value = normalize_text ( agent.nextSibling )
+                try:
+                    agent = agents.findAll('p')[0]
+                    text = agent.text
 
-                    if re.search(r'^Listing Agent', key):
+                    if re.search(r'^Listing Agent:', text):
+                        data = re.split(',|:', text)
                         tmp = {} 
                         try:
-                            tmp['name'] = normalize_text( value.split(',')[0] )
-                            tmp['tel']  = normalize_text( value.split(',')[1] )
+                            tmp['name'] = normalize_text( data[1] )
+                            tmp['tel']  = normalize_text( data[2] )
                         except Exception:
                             pass
                 
                         if tmp.has_key('name'):
                             houseRlt['listagent'] = tmp
         
+                except Exception:
+                    pass
 
         # find images 
         image_links = [ i.get('data-rsbigimg').replace('/h/', '/m/') for i in soup.findAll('a', {'class': 'rsImg'}) ]

@@ -63,7 +63,7 @@ class HouseItem(scrapy.Item):
 
     def update_data_base(self):
         
-        if self.has_key('address'):
+        if 'address' in self:
             house, _created = House.get_or_create( 
                           address = self['address'],
                           state = self['state'],
@@ -118,11 +118,11 @@ class HouseItem(scrapy.Item):
         except peewee.IntegrityError as e:
             pass
             
-        if self.has_key('listagent'):
+        if 'listagent' in self:
             data = self['listagent']
-            if data.has_key('name'):
+            if 'name' in data:
                 agent, _created = Agent.get_or_create( name= data['name'],
-                                                 tel = data.get('tel', None ) )
+                                                 defaults={'tel': data.get('tel', None )})
                 house.listagent = agent 
                 house.save()
             

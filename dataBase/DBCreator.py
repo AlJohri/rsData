@@ -10,6 +10,7 @@ import DB_models
 Schemas = OrderedDict()
 
 Schemas['House']      = DB_models.House
+Schemas['Agent']      = DB_models.Agent
 Schemas['Mlsinfo']    = DB_models.Mlsinfo
 Schemas['Housemls']   = DB_models.Housemls
 Schemas['Mlshistory'] = DB_models.Mlshistory

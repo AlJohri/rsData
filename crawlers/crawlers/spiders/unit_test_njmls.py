@@ -17,6 +17,14 @@ class TestNjmls(unittest.TestCase):
 
         self.assertEqual( 6, self.mls.get_total_pages( response ) )
 
+    def test_list_agent_link(self):
+        curdir = os.path.dirname( os.path.realpath( __file__ ) )
+        file_name = 'unit_test_files/listing-agent-link.html' 
+        body = open( os.path.join(curdir, file_name ) ).read()
+
+        houseData, mlsHist, image_links = self.mls.extract_detail_page( body, True )
+
+        self.assertEqual('halina strzepek', houseData['listagent']['name'] )
 
     def test_list_sold(self):
         curdir = os.path.dirname( os.path.realpath( __file__ ) )
