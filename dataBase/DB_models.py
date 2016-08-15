@@ -35,7 +35,7 @@ class Mlsinfo(BaseModel):
     All relavent infomation are stored and should be enough to decide whether it is a good investment. 
     '''
     mls = FixedCharField( primary_key = True ) 
-    type = FixedCharField() # sell or rent
+    type = FixedCharField(null=True) # sell or rent
     attic = TextField(null=True)
     basement = TextField(null=True)
     bathrooms = FloatField(null=True)

@@ -123,8 +123,8 @@ class HouseItem(scrapy.Item):
             if 'name' in data:
                 agent, _created = Agent.get_or_create( name= data['name'],
                                                  defaults={'tel': data.get('tel', None )})
-                house.listagent = agent 
-                house.save()
+                mls.listagent = agent
+                mls.save()
             
             
 

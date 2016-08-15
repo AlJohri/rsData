@@ -100,7 +100,8 @@ class Njmls(scrapy.Spider):
         self.logger.info('total page %s' % pages )
 
         
-        for page in range(1, pages+1 ):
+        #for page in range(1, pages+1 ):
+        for page in range(1, 2 ):
             search_params = response.meta['search_params'].copy()
             search_params['page'] = page
             query = self.gen_query( **search_params )
