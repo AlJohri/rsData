@@ -44,7 +44,7 @@ class Mlsinfo(BaseModel):
     floor = FloatField(null=True)
     garage = TextField(null=True)
     heatcool = TextField(null=True)
-    listrent = IntegerField(null=True)
+    listrent = IntegerField(null=True) # current rent when listing
     lot = FloatField(null=True)
     rooms = FloatField(null=True)
     schoole = IntegerField(null=True)

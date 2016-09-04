@@ -100,7 +100,8 @@ class Njmls(scrapy.Spider):
         self.logger.info('total page %s' % pages )
 
         
-        for page in range(1, pages+1 ):
+        #for page in range(1, pages+1 ):
+        for page in range(1, 2 ):
             search_params = response.meta['search_params'].copy()
             search_params['page'] = page
             query = self.gen_query( **search_params )
@@ -282,8 +283,9 @@ class Njmls(scrapy.Spider):
                     pass
 
         # find images 
-        image_links = [ i.get('data-rsbigimg').replace('/h/', '/m/') for i in soup.findAll('a', {'class': 'rsImg'}) ]
+        image_links = [ i.get('data-rsbigimg').strip().replace('/h/', '/m/') for i in soup.findAll('a', {'class': 'rsImg'}) ]
         
+        image_links = filter(lambda x: x.find('http')== 0, image_links )
 
         mls_history = []
         mls_prev = ''
