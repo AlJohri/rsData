@@ -74,7 +74,7 @@ DOWNLOAD_DELAY = 3
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
-CLOSESPIDER_ITEMCOUNT =3 
+#CLOSESPIDER_ITEMCOUNT =3 
 EXTENSIONS = {
     'scrapy.extensions.telnet.TelnetConsole': None,
 }
