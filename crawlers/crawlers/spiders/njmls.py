@@ -68,7 +68,7 @@ class Njmls(scrapy.Spider):
                 continue
 
             for proptype, stat in qc.PS:
-                city, zipcode = line.split()
+                city, zipcode = [ i.strip() for i in line.split(',') ]
                 city = city.lower()
                 page = 1
 
