@@ -29,7 +29,7 @@ def print_mls():
              )
             
     
-    formatstr='{mls:8} {type:5} {date} {onMarket:3} {price:8} {status:4}{bedrooms:4}{bathrooms:4}{tax:>8}{address:>35}{town:>15}'
+    formatstr='{mls:8},{type:5},{date},{onMarket:3},{price:8},{status:4},{bedrooms:4},{bathrooms:4},{tax:>8},{address:>35},{town:>15}'
     for i in query:
 
 
