@@ -9,6 +9,7 @@ import os
 class TestDBModels(unittest.TestCase):
     
     def setUp(self):
+        
         self.dbname = './unit_test_files/temp.db'
         database.init( self.dbname )  
         database.create_tables([House, Agent, Mlsinfo, Housemls, Mlshistory])
